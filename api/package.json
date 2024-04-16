@@ -12,19 +12,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.19.2",
-    "mongoose": "^8.3.1",
-
+    "bcrypt": "^5.1.1",
     "cloudinary": "^1.33.0",
+    "cors": "^2.8.5",
     "datauri": "^4.1.0",
     "dotenv": "^16.0.3",
+    "express": "^4.19.2",
     "findit": "^2.0.0",
     "formidable": "^2.1.1",
     "itinerary": "^0.1.6",
     "joi": "^17.7.0",
     "joi-password-complexity": "^5.1.0",
     "jsonwebtoken": "^8.5.1",
+    "mongoose": "^8.3.1",
     "multer": "^1.4.5-lts.1",
     "multer-storage-cloudinary": "^4.0.0",
     "save": "^2.9.0",
@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "jest": "^29.7.0",
-    "nodemon": "^2.0.20",
+    "nodemon": "^2.0.22",
     "supertest": "^6.3.4"
   }
 }
