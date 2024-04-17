@@ -1,5 +1,5 @@
 import { Router } from "express";
-import Payment from "../models/Maleesha/Payment.js";
+import Payment from "../../models/Maleesha/Payment.js";
 
 const router = Router();
 

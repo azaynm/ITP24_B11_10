@@ -1,6 +1,6 @@
 import { Router } from "express";
-import Feedback from "../models/Geethika/Feedback.js";
-import Order from "../models/Deranidu/Order.js";
+import Feedback from "../../models/Geethika/Feedback.js";
+import Order from "../../models/Deranidu/Order.js";
 
 
 const router = Router();

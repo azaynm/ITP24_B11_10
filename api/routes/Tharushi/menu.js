@@ -1,9 +1,9 @@
 import { Router } from "express";
 import mongoose from "mongoose";
-import Menu from "../models/Tharushi/Menu.js";
+import Menu from "../../models/Tharushi/Menu.js";
 import multer from "multer";
 import cloudinary from "cloudinary";
-import Inventory from "../models/Charuka/Inventory.js";
+import Inventory from "../../models/Charuka/Inventory.js";
 
 
 const router = Router();

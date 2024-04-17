@@ -1,6 +1,6 @@
 import { Router } from "express";
-import Delivery from "../models/Maleesha/Delivery.js";
-import Order from "../models/Deranidu/Order.js";
+import Delivery from "../../models/Maleesha/Delivery.js";
+import Order from "../../models/Deranidu/Order.js";
 
 
 const router = Router();

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import Inventory from "../models/Charuka/Inventory.js";
+import Inventory from "../../models/Charuka/Inventory.js";
 
 const router = Router();
 

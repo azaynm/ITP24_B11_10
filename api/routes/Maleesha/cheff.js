@@ -1,5 +1,5 @@
 import { Router } from "express";
-import Cheff from "../models/Maleesha/Cheff.js";
+import Cheff from "../../models/Maleesha/Cheff.js";
 
 
 const router = Router();

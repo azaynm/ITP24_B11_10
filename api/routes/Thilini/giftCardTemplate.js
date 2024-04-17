@@ -1,5 +1,5 @@
 import { Router } from "express";
-import GiftCardTemplate from "../models/Thilini/GiftCardTemplate.js";
+import GiftCardTemplate from "../../models/Thilini/GiftCardTemplate.js";
 
 
 const router = Router();

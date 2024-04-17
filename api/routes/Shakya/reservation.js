@@ -1,5 +1,5 @@
 import { Router } from "express";
-import Reservation from "../models/Shakya/Reservation.js";
+import Reservation from "../../models/Shakya/Reservation.js";
 
 const router = Router();
 
