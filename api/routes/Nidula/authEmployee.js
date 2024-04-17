@@ -1,13 +1,13 @@
 import { Router } from "express";
-import Employee from "../models/Employee.js";
+import Employee from "../../models/Nidula/Employee.js";
 import mongoose from "mongoose";
 //use to hash password
 import bcrypt from "bcrypt";
 import { signUpBodyValidation, loginBodyValidation } from "../../utils/employeeValidationSchema.js";
 import generateTokens from "../../utils/generateTokens.js";
-import EmployeeToken from "../models/Nidula/EmployeeToken.js";
-import DeliveryStaff from "../models/Maleesha/DeliveryStaff.js";
-import Cheff from "../models/Maleesha/Cheff.js";
+import EmployeeToken from "../../models/Nidula/EmployeeToken.js";
+import DeliveryStaff from "../../models/Maleesha/DeliveryStaff.js";
+import Cheff from "../../models/Maleesha/Cheff.js";
 
 
 

@@ -5,6 +5,7 @@ import { Routes, Route, BrowserRouter, useNavigate, Navigate } from "react-route
 
 import Navbar from './Navbar';
 import Home from './pages/Home';
+
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Protected from './Protected';

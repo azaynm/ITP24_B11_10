@@ -1,5 +1,5 @@
 import { Router } from "express";
-import Salary from "../models/Nidula/Salary.js";
+import Salary from "../../models/Nidula/Salary.js";
 
 const router = Router();
 
