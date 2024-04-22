@@ -11,8 +11,9 @@ const Navbar = ({ role, setStatus, status, logOut }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="header-bottom" style={{backgroundColor:'#76A72E', height:'40px' }} >
+    <div className="header-bottom" style={{backgroundColor:'#76A72E', height:'60px', display:'flex', alignItems:'center', justifyContent:'center' }} >
     <nav className="" style={{ textAlign: "center", marginTop: "0px"}}>
+      <img src="/logo.png" style={{width:'100px'}} />
       <Link
         to={`/cart/${localStorage.getItem("username")}`}
         style={{
