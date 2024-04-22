@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import Badge from "@mui/material/Badge";
 import MailIcon from "@mui/icons-material/Mail";
@@ -5,13 +6,16 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 const { Link } = require("react-router-dom");
 
+
 const API_BASE = "http://localhost:8080";
 
 const Navbar = ({ role, setStatus, status, logOut }) => {
   const navigate = useNavigate();
 
+
   return (
-    <div className="header-bottom bg-success" style={{ height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
+    <div className="header-bottom bg-success d-flex flex-column" style={{ height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
+
       <nav className="" style={{ textAlign: "center", marginTop: "0px" }}>
         <img src="/logo.png" style={{ width: '100px' }} />
         <Link
@@ -96,16 +100,16 @@ const Navbar = ({ role, setStatus, status, logOut }) => {
           </>
         ) : (
           <Link
-              to="/user-dashboard"
-              style={{
-                color: "white",
-                fontWeight: "bold",
-                textDecoration: "none",
-                padding: "10px",
-              }}
-            >
-              User Dashboard
-            </Link>
+            to="/user-dashboard"
+            style={{
+              color: "white",
+              fontWeight: "bold",
+              textDecoration: "none",
+              padding: "10px",
+            }}
+          >
+            User Dashboard
+          </Link>
         )}
 
         <Link
@@ -152,10 +156,13 @@ const Navbar = ({ role, setStatus, status, logOut }) => {
                         </Badge>
                     </Link> */}
           </span>
+          
         )}
 
       </nav>
+     
     </div>
+    
   );
 };
 
