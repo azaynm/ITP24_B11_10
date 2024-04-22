@@ -95,9 +95,14 @@ function App() {
     }
   }
 
+
+
   useEffect(() => {
-    checkLogin();
-  }, []);
+    // Only execute checkLogin if status is false (not logged in) and token exists
+    if (!status && token) {
+      checkLogin();
+    }
+  }, [status, token]);
 
 
 
@@ -117,14 +122,6 @@ function App() {
   useEffect(() => {
     fetchRole();
   }, []);
-
-
-
-
-
-
-
-
 
 
 
@@ -169,8 +166,6 @@ function App() {
           <Routes>
 
             <Route path='/' element={<Home categories={categories} />} />
-
-
 
             <Route path='/reservation' element={
 
