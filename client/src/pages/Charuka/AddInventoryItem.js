@@ -75,7 +75,7 @@ const AddInventoryItem = () => {
                         <option value="beverage">Beverage</option>
                     </select>
                 </div>
-                <button type="submit" className="btn btn-primary">Add Inventory Item</button>
+                <button type="submit" className="btn btn-warning">Add Inventory Item</button>
             </form>
         </div>
     )

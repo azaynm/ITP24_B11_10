@@ -32,7 +32,7 @@ function TableDetails() {
             </p>
             <button
               type="button"
-              className="btn btn-success"
+              className="btn btn-warning"
               onClick={() => handleBookNowClick("Indoor")}
             >
               BOOK NOW
@@ -55,7 +55,7 @@ function TableDetails() {
             </p>
             <button
               type="button"
-              className="btn btn-success"
+              className="btn btn-warning"
               onClick={() => handleBookNowClick("Outdoor")}
             >
               BOOK NOW

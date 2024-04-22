@@ -76,7 +76,7 @@ const InventoryDashboard = () => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
             </div>
-            <button className="btn btn-primary mb-3" onClick={() => window.location.href = '/add-inventory-item'}>Add Inventory Item</button>
+            <button className="btn btn-warning mb-3" onClick={() => window.location.href = '/add-inventory-item'}>Add Inventory Item</button>
             <PDFInventory />
            
             <div className="table-responsive">
@@ -109,7 +109,7 @@ const InventoryDashboard = () => {
                                     <td>{new Date(item.expirationDate).toLocaleString()}</td>
                                     <td>{item.category}</td>
                                     <td>
-                                        <button className="btn btn-primary me-2" onClick={() => handleEdit(item._id)}><FontAwesomeIcon icon={faEdit} /></button>
+                                        <button className="btn btn-warning me-2" onClick={() => handleEdit(item._id)}><FontAwesomeIcon icon={faEdit} /></button>
                                         <button className="btn btn-danger" onClick={() => handleDelete(item._id)}><FontAwesomeIcon icon={faTrashAlt} /></button>
                                     </td>
                                 </tr>

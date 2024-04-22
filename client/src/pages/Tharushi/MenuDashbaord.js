@@ -60,7 +60,7 @@ const MenuDashbaord = () => {
   return (
     <div className="container mt-5">
             <h1 className="mb-4">Menu Dashboard</h1>
-            <button className="btn btn-primary mb-3" onClick={() => window.location.href = '/add-menu'}>Add Menu Item</button>
+            <button className="btn btn-warning mb-3" onClick={() => window.location.href = '/add-menu'}>Add Menu Item</button>
             <td><PDFMenu /></td> 
             <div className="mb-3">
                 <input
@@ -101,7 +101,7 @@ const MenuDashbaord = () => {
                                     <td>{item.category}</td>
                                     <td>{item.sellingPrice}</td>
                                     <td>
-                                        <button className="btn btn-primary me-2" onClick={() => handleEdit(item._id)}><FontAwesomeIcon icon={faEdit} /></button>
+                                        <button className="btn btn-warning me-2" onClick={() => handleEdit(item._id)}><FontAwesomeIcon icon={faEdit} /></button>
                                         <button className="btn btn-danger" onClick={() => handleDelete(item._id)}><FontAwesomeIcon icon={faTrashAlt} /></button>
                                     </td>
                                 </tr>

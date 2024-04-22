@@ -52,7 +52,7 @@ const Login = ({setStatus}) => {
                     title: 'Login Success...',
                     text: 'You have successfully logged in'
                 });
-                navigate('/my-account');
+                navigate('/');
                 const data = await response.json();
                 console.log(data.refreshToken);
                 localStorage.setItem('rfkey', data.refreshToken);

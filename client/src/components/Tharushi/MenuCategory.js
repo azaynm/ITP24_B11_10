@@ -155,7 +155,7 @@ const MenuCategory = ({ category }) => {
                                         />
                                 </div>
                                 {menuItem.outOfStock && <button className="btn btn-danger mt-2">Out of Stock</button>}
-                                {!menuItem.outOfStock && <button className='btn btn-primary mt-2' onClick={() => addItemToCart(menuItem._id, menuItem.selectedQuantity)}>Add to Cart</button>}
+                                {!menuItem.outOfStock && <button className='btn btn-warning mt-2' onClick={() => addItemToCart(menuItem._id, menuItem.selectedQuantity)}>Add to Cart</button>}
                             </div>
                         </div>
                     </div>

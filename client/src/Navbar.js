@@ -11,7 +11,7 @@ const Navbar = ({ role, setStatus, status, logOut }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="header-bottom" style={{ backgroundColor: '#76A72E', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
+    <div className="header-bottom bg-success" style={{ height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
       <nav className="" style={{ textAlign: "center", marginTop: "0px" }}>
         <img src="/logo.png" style={{ width: '100px' }} />
         <Link
@@ -38,19 +38,6 @@ const Navbar = ({ role, setStatus, status, logOut }) => {
         </Link>
 
 
-        {role.includes("systemAdmin") ? (
-          <Link
-            to="/add-food"
-            style={{
-              color: "white",
-              fontWeight: "bold",
-              textDecoration: "none",
-              padding: "10px",
-            }}
-          >
-            Add Food
-          </Link>
-        ) : null}
 
         {role.includes("eventCoordinator") ? (
           <Link
@@ -80,7 +67,7 @@ const Navbar = ({ role, setStatus, status, logOut }) => {
           </Link>
         ) : null}
 
-{!status ? (
+        {!status ? (
           null
         ) : (
           <Link
@@ -98,18 +85,44 @@ const Navbar = ({ role, setStatus, status, logOut }) => {
 
 
         {role.includes("systemAdmin") ? (
+          <>
+            <Link
+              to="/admin"
+              style={{
+                color: "white",
+                fontWeight: "bold",
+                textDecoration: "none",
+                padding: "10px",
+              }}
+            >
+              Admin Dashboard
+            </Link>
+
+            <Link
+              to="/user-dashboard"
+              style={{
+                color: "white",
+                fontWeight: "bold",
+                textDecoration: "none",
+                padding: "10px",
+              }}
+            >
+              User Dashboard
+            </Link>
+          </>
+        ) : (
           <Link
-            to="/admin"
-            style={{
-              color: "white",
-              fontWeight: "bold",
-              textDecoration: "none",
-              padding: "10px",
-            }}
-          >
-            Admin Dashboard
-          </Link>
-        ) : null}
+              to="/user-dashboard"
+              style={{
+                color: "white",
+                fontWeight: "bold",
+                textDecoration: "none",
+                padding: "10px",
+              }}
+            >
+              User Dashboard
+            </Link>
+        )}
 
         <Link
           to="/register"
@@ -156,7 +169,7 @@ const Navbar = ({ role, setStatus, status, logOut }) => {
                     </Link> */}
           </span>
         )}
-       
+
       </nav>
     </div>
   );
