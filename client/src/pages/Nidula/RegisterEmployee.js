@@ -152,7 +152,7 @@ const RegisterEmployee = () => {
                     </div>
 
                     <div className="d-grid gap-2">
-                        <button type="button" className="btn btn-primary btn-lg" onClick={validatePassword}>ADD</button>
+                        <button type="button" className="btn btn-warning btn-lg" onClick={validatePassword}>ADD</button>
                     </div>
 
                 </form>

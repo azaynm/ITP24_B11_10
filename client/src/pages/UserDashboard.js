@@ -35,8 +35,9 @@ const UserDashboard = () => {
                         {tabDetails.map(tab => (
                             <button
                                 key={tab.id}
-                                className={`nav-link ${activeTab === tab.id ? 'active' : ''}`}
+                                className={`nav-link text-light ${activeTab === tab.id ? 'bg-success active' : ''}`}
                                 onClick={() => handleTabClick(tab)} // Call handleTabClick function on click
+                                style={{ marginTop: '10px' }}
                             >
                                 {tab.name}
                             </button>
