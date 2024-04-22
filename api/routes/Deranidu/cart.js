@@ -55,6 +55,33 @@ router.post("/add-item", async (req, res) => {
     }
 })
 
+// Update cart item quantity
+router.put('/update-item/:id', async (req, res) => {
+    const { id } = req.params;
+    const { quantity } = req.body;
+  
+    try {
+      // Find the cart item by ID
+      const cartItem = await Cart.findById(id);
+  
+      if (!cartItem) {
+        return res.status(404).json({ message: 'Cart item not found' });
+      }
+  
+      // Update the quantity and calculate the new subtotal
+      cartItem.quantity = quantity;
+      cartItem.subTotal = cartItem.price * quantity;
+  
+      // Save the updated cart item
+      await cartItem.save();
+  
+      res.status(200).json({ message: 'Cart item updated successfully', updatedCartItem: cartItem });
+    } catch (error) {
+      console.error('Error updating cart item:', error);
+      res.status(500).json({ message: 'Failed to update cart item' });
+    }
+  });
+
 router.get("/user/:id", async (req, res) => {
     try {
         const id = req.params.id;
@@ -104,8 +131,10 @@ router.get("/users/:id", async (req, res) => {
 
 router.delete('/delete-item/:id', async (req, res) => {
     try {
+
         const id = req.params.id;
-        const result = await Cart.findOneAndDelete(id);
+        console.log("delete",id)
+        const result = await Cart.findByIdAndDelete(id)
         res.json(result);
     } catch (error) {
         res.status(500).json({ message: "Error deleting carts", error: error });
