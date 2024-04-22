@@ -331,13 +331,13 @@ const DeliveryManagementCategory = ({ category }) => {
                                                 <tr>
                                                     <td colSpan="2">
                                                         {category === "pending" && (
-                                                            <button className='btn btn-primary' onClick={() => openCheffAssign(item._id)} style={{ width: '100%' }}>Assign Cheff</button>
+                                                            <button className='btn btn-warning' onClick={() => openCheffAssign(item._id)} style={{ width: '100%' }}>Assign Cheff</button>
                                                         )}
                                                         {category === "ready-to-deliver" && (
-                                                            <button className='btn btn-primary' onClick={() => openDeliveryAssign(item._id)} style={{ width: '100%' }}>Assign Delivery Staff</button>
+                                                            <button className='btn btn-warning' onClick={() => openDeliveryAssign(item._id)} style={{ width: '100%' }}>Assign Delivery Staff</button>
                                                         )}
                                                         {category === "delivering" && (
-                                                            <button className='btn btn-primary' onClick={() => finishOrder(item._id)} style={{ width: '100%' }}>Finish</button>
+                                                            <button className='btn btn-warning' onClick={() => finishOrder(item._id)} style={{ width: '100%' }}>Finish</button>
                                                         )}
                                                     </td>
                                                 </tr>
@@ -358,7 +358,7 @@ const DeliveryManagementCategory = ({ category }) => {
                                     <button className="btn btn-danger" type="button" onClick={() => setIsOpenDeliveryAssign(false)}>
                                         Close
                                     </button>
-                                    <button className="btn btn-primary" onClick={() => assignOrder()}>Assign Delivery</button>
+                                    <button className="btn btn-warning" onClick={() => assignOrder()}>Assign Delivery</button>
                                 </div>
                                 <div className="m-4">
                                     <div className="form-group">
@@ -388,7 +388,7 @@ const DeliveryManagementCategory = ({ category }) => {
                                     <button className="btn btn-danger" type="button" onClick={() => setIsOpenCheffAssign(false)}>
                                         Close
                                     </button>
-                                    <button className="btn btn-primary" onClick={() => makeReady()}>Assign Cheff</button>
+                                    <button className="btn btn-warning" onClick={() => makeReady()}>Assign Cheff</button>
                                 </div>
                                 <div className="m-4">
                                     <div className="form-group">

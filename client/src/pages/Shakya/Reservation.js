@@ -20,7 +20,7 @@ const Reservation = () => {
         {tabDetails.map((tab) => (
           <button
             key={tab.id}
-            className={`tab btn btn-primary mx-2 ${activeTab.id === tab.id ? 'active' : ''}`}
+            className={`tab btn btn-success mx-2 ${activeTab.id === tab.id ? 'active' : ''}`}
             onClick={() => handleTabClick(tab.id, tab.type)}
           >
             {tab.name}

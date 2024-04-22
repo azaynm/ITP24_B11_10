@@ -40,17 +40,19 @@ const Admin = () => {
     return (
         <div className='h-100 d-flex'>
     <div className='col-2 bg-dark'>
-        <div className="nav flex-column nav-pills vh-100" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            {tabDetails.map(tab => (
-                <button
-                    key={tab.id}
-                    className={`nav-link ${activeTab === tab.id ? 'active' : ''}`}
-                    onClick={() => handleTabClick(tab)} // Call handleTabClick function on click
-                >
-                    {tab.name}
-                </button>
-            ))}
-        </div>
+    <div className="nav flex-column nav-pills vh-100" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+    {tabDetails.map(tab => (
+        <button
+            key={tab.id}
+            className={`nav-link text-light ${activeTab === tab.id ? 'bg-success active' : ''}`}
+            onClick={() => handleTabClick(tab)} // Call handleTabClick function on click
+            style={{ marginTop: '10px' }} // Add margin bottom
+        >
+            {tab.name}
+        </button>
+    ))}
+</div>
+
     </div>
 
     <div className='col-10 h-100'>

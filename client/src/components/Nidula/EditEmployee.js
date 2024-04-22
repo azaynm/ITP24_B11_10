@@ -120,7 +120,7 @@ const EditEmployee = ({ emp, fetchEmployeeData }) => {
                             </div>
                         </div>
                         <div className="d-grid gap-2">
-                            <button onClick={saveChanges} className="btn btn-primary">Save</button>
+                            <button onClick={saveChanges} className="btn btn-warning">Save</button>
                             <button onClick={cancelEdit} className="btn btn-secondary">Cancel</button>
                         </div>
                     </div>

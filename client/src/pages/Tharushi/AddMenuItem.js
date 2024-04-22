@@ -183,7 +183,7 @@ const AddMenuItem = ({ categories }) => {
     
     
                             <div class="text-center text-lg-start mt-4 pt-2">
-                                <input className="btn btn-primary" type="submit" value="Add Food" />
+                                <input className="btn btn-warning" type="submit" value="Add Food" />
                             </div>
     
                         </form>

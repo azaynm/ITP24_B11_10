@@ -45,7 +45,6 @@ const MyOrders = () => {
     item._id.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.customer.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.paymentId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.city.toLowerCase().includes(searchQuery.toLowerCase())
 );
 
@@ -75,7 +74,6 @@ const MyOrders = () => {
                 <th>Amount</th>
                 <th>Payment ID</th>
                 <th>Status</th>
-                <th>Address</th>
                 <th>City</th>
                 <th>Phone</th>
                 <th>Action</th>
@@ -91,15 +89,14 @@ const MyOrders = () => {
                   <td>Rs. {order.amount}</td>
                   <td>{order.paymentId}</td>
                   <td>{order.status}</td>
-                  <td>{order.address}</td>
                   <td>{order.city}</td>
                   <td>{order.phone}</td>
                   <td>
                     {order.status === 'on the way' && (
-                      <button className="btn btn-primary" onClick={() => handleTrackOrder(order._id)}>Track Order</button>
+                      <button className="btn btn-warning" onClick={() => handleTrackOrder(order._id)}>Track Order</button>
                     )}
                     {order.status === 'finished' && order.isFeedbackGiven === false && (
-                      <button className="btn btn-primary" onClick={() => giveFeedback(order._id)}>Give Feedback</button>
+                      <button className="btn btn-warning" onClick={() => giveFeedback(order._id)}>Give Feedback</button>
                     )}
                   </td>
                 </tr>

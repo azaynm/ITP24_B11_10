@@ -19,7 +19,7 @@ const GiftCard = () => {
                     {tabDetails.map(tab => (
                         <button
                             key={tab.id}
-                            className={`tab btn btn-primary mx-2 ${activeTab === tab.id ? 'active' : ''}`}
+                            className={`tab btn btn-success mx-2 ${activeTab === tab.id ? 'active' : ''}`}
                             onClick={() => setActiveTab(tab.id)}
                         >
                             {tab.name}

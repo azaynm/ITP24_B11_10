@@ -173,7 +173,7 @@ const SalaryManagement = () => {
                                 <td>
                                     {!paidStatus[employee.userName] && (
                                         <button
-                                            className="btn btn-primary mr-2"
+                                            className="btn btn-warning mr-2"
                                             onClick={() => {
                                                 // Show input field
                                                 setSelectedEmployee(employee.userName);

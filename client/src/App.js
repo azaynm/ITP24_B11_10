@@ -41,6 +41,7 @@ import AddInventoryItem from './pages/Charuka/AddInventoryItem';
 import InventoryDashboard from './pages/Charuka/InventoryDashboard';
 import EditMenuItem from './pages/Tharushi/EditMenuItem';
 import GiftCard from './pages/Thilini/GiftCard';
+import Footer from './Footer';
 
 
 
@@ -154,7 +155,7 @@ function App() {
     })
     localStorage.removeItem("isLogged");
   };
- 
+
 
 
 
@@ -191,30 +192,30 @@ function App() {
 
             <Route path='/delivery-management'
               element={
-                // <RoleProtected role={role} specificRole="systemAdmin">
-                <DeliveryManagement />
-                // </RoleProtected>
+                  <DeliveryManagement />
               }
             />
 
-
             <Route path='/delivery-approval'
               element={
-                // <RoleProtected role={role} specificRole="systemAdmin">
-                <DeliveryApproval />
-                // </RoleProtected>
+                  <DeliveryApproval />
               }
             />
 
 
             <Route path='/add-menu'
               element={
-                <AddFood categories={categories} />
+                  <AddFood categories={categories} />
               }
             />
 
 
-            <Route path='/edit-menu-item/:itemId' element={<EditMenuItem categories={categories}/>} />
+            <Route path='/edit-menu-item/:itemId'
+              element={
+                  <EditMenuItem categories={categories} />
+              }
+            />
+
 
             {/* <Route path='/employee'
               element={
@@ -228,21 +229,60 @@ function App() {
             <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login setStatus={setStatus} />} />
 
-            <Route path='/add-gift-card' element={<AddGiftCard />} />
 
-            <Route path="/pending-reservations" element={<PendingReservations />} />
+
+            <Route path='/add-gift-card'
+              element={
+                  <AddGiftCard />
+              }
+            />
+
+
+            <Route path='/pending-reservations'
+              element={
+                  <PendingReservations />
+              }
+            />
+
             <Route path="/ReservationForm" element={<ReservationForm />} />
 
             <Route path="/my-orders" element={<MyOrders />} />
-            <Route path="/admin" element={<Admin />} />
+
             <Route path="/user-dashboard" element={<UserDashboard />} />
 
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/gift-card" element={<GiftCard />} />
-            <Route path='/edit-inventor-item/:id' element={<EditInventoryItem />} />
-            <Route path='/add-inventory-item' element={<AddInventoryItem />} />
-            <Route path='/inventory-dashboard' element={<InventoryDashboard />} />
+
+
+            <Route path='/admin'
+              element={
+                <RoleProtected role={role} specificRole="systemAdmin">
+                  <Admin />
+                </RoleProtected>
+              }
+            />
+
+            <Route path='/edit-inventor-item/:id'
+              element={
+                  <EditInventoryItem />
+              }
+            />
+
+            <Route path='/add-inventory-item'
+              element={
+                  <AddInventoryItem />
+              }
+            />
+
+            <Route path='/inventory-dashboard'
+              element={
+                  <InventoryDashboard />
+              }
+            />
+
+
           </Routes>
+          <Footer />
         </div>
 
       </BrowserRouter>
