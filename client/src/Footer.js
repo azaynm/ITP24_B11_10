@@ -5,7 +5,7 @@ import { faFacebook, faTwitter, faInstagram } from '@fortawesome/free-brands-svg
 
 const Footer = () => {
   return (
-    <footer className="bg-dark text-light">
+    <footer className="bg-dark text-light px-5">
       <div className=" py-5">
         <div className="row">
           <div className="col-md-6">
@@ -41,9 +41,9 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="bg-secondary py-3" style={{backgroundColor:'rgb(118, 167, 46)'}}>
+      <div className="bg-secondary py-3 bg-success" >
         <div className="text-center" >
-          <p className="m-0">&copy; 2024 CafeName. All Rights Reserved.</p>
+          <p className="m-0">&copy; 2024 LiveLifeOrganics. All Rights Reserved.</p>
         </div>
       </div>
     </footer>
