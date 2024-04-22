@@ -1,23 +1,20 @@
-import React from 'react'
-import { useState, useEffect } from 'react';
-import '../../index.css';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Button from '@mui/material/Button';
-import { useNavigate } from 'react-router-dom';
-import FormData from 'form-data';
 import Swal from 'sweetalert2';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
-
+import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
-
   const [cartFoodData, setCartFoodData] = useState([]);
   const [cartFoodLoading, setCartFoodLoading] = useState(true);
   const [total, setTotal] = useState(0);
   const [cart, setCart] = useState("");
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
+  const [editItemId, setEditItemId] = useState(null);
+  const [editQuantity, setEditQuantity] = useState('');
 
   const handleCheckout = () => {
     navigate('/payment', { state: { total, cartFoodData } });
@@ -28,50 +25,57 @@ const Cart = () => {
     try {
       const { data: response } = await axios.get(`http://localhost:8080/api/cart/user/${localStorage.getItem('username')}`);
       setCartFoodData(response);
-      console.log(response);
-
       const totalSubTotal = response.reduce((accumulator, currentItem) => {
         return accumulator + currentItem.subTotal;
       }, 0);
       setTotal(totalSubTotal);
-      console.log(cartFoodData)
-
     } catch (error) {
       console.error(error.message);
     }
     setCartFoodLoading(false);
-  }
+  };
 
   useEffect(() => {
     fetchCartFoodData();
-    console.log("Total", total);
   }, []);
 
   const deleteItem = async (id) => {
     await Swal.fire({
-      title: 'Do you want to remove this from?',
+      title: 'Do you want to remove this item?',
       showDenyButton: false,
       showCancelButton: true,
       confirmButtonText: 'Remove',
-      denyButtonText: `Cancel`,
+      denyButtonText: 'Cancel',
     }).then(async (result) => {
-      /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        Swal.fire('Removed Item!', '', 'success')
         try {
-          await fetch(`http://localhost:8080/api/cart/delete-item/${id}`, { method: "DELETE" });
-          // Update cartFoodData after successful deletion
-          setCartFoodData(cartFoodData.filter(cartFoodItem => cartFoodItem._id !== id));
-
+          await axios.delete(`http://localhost:8080/api/cart/delete-item/${id}`);
+          setCartFoodData(cartFoodData.filter(item => item._id !== id));
+          Swal.fire('Item Removed!', '', 'success');
         } catch (error) {
           console.error('Error deleting item:', error);
           Swal.fire('Error!', 'Failed to remove item from cart.', 'error');
         }
-      } else if (result.isDenied) {
-        Swal.fire('Item is not removed', '', 'info')
       }
     });
-  }
+  };
+
+  const handleEdit = (id, quantity) => {
+    setEditItemId(id);
+    setEditQuantity(quantity);
+  };
+
+  const updateCartItem = async (id, newQuantity) => {
+    try {
+      await axios.put(`http://localhost:8080/api/cart/update-item/${id}`, { quantity: newQuantity });
+      setCartFoodData(cartFoodData.map(item => (item._id === id ? { ...item, quantity: newQuantity } : item)));
+      Swal.fire('Item Updated!', '', 'success');
+      setEditItemId(null);
+    } catch (error) {
+      console.error('Error updating item:', error);
+      Swal.fire('Error!', 'Failed to update item in cart.', 'error');
+    }
+  };
 
   useEffect(() => {
     const newTotal = cartFoodData.reduce((accumulator, currentItem) => {
@@ -80,12 +84,9 @@ const Cart = () => {
     setTotal(newTotal);
   }, [cartFoodData]);
 
-  const filteredCartItems = cartFoodData.filter(cartFoodItem =>
-    cartFoodItem.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredCartItems = cartFoodData.filter(item =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
-
-
 
   return (
     <div className='container'>
@@ -109,8 +110,27 @@ const Cart = () => {
                   <div>
                     <Card.Title>{item.name}</Card.Title>
                     <Card.Text>Price: Rs. {item.price}</Card.Text>
-                    <Card.Text>Quantity: {item.quantity}</Card.Text>
+                    {editItemId === item._id ? (
+                      <Form.Control
+                        type="number"
+                        value={editQuantity}
+                        onChange={(e) => setEditQuantity(e.target.value)}
+                      />
+                    ) : (
+                      <Card.Text>Quantity: {item.quantity}</Card.Text>
+                    )}
                     <Card.Text>Subtotal: Rs. {item.subTotal}</Card.Text>
+                    {editItemId === item._id ? (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => updateCartItem(item._id, editQuantity)}
+                      >
+                        Update
+                      </Button>
+                    ) : (
+                      <Button variant="outline-primary" onClick={() => handleEdit(item._id, item.quantity)}>Edit</Button>
+                    )}
                     <Button variant="outline-danger" onClick={() => deleteItem(item._id)}>Remove</Button>
                   </div>
                 </div>
@@ -126,7 +146,7 @@ const Cart = () => {
         <button className="btn btn-primary" onClick={handleCheckout}>Checkout</button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Cart
+export default Cart;
