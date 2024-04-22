@@ -38,33 +38,6 @@ const Navbar = ({ role, setStatus, status, logOut }) => {
         </Link>
 
 
-        {role.includes("systemAdmin") ? (
-          <Link
-            to="/add-food"
-            style={{
-              color: "white",
-              fontWeight: "bold",
-              textDecoration: "none",
-              padding: "10px",
-            }}
-          >
-            Add Food
-          </Link>
-        ) : null}
-
-        {role.includes("eventCoordinator") ? (
-          <Link
-            to="/event-management"
-            style={{
-              color: "white",
-              fontWeight: "bold",
-              textDecoration: "none",
-              padding: "10px",
-            }}
-          >
-            Event Management
-          </Link>
-        ) : null}
 
         {role.includes("deliveryStaff") ? (
           <Link
