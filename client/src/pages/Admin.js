@@ -12,6 +12,7 @@ import AddInventoryItem from './Charuka/AddInventoryItem';
 import InventoryDashboard from './Charuka/InventoryDashboard';
 import AddMenuItem from './Tharushi/AddMenuItem';
 import MenuDashbaord from './Tharushi/MenuDashbaord';
+import AddGiftCard from './Thilini/AddGiftCard';
 
 const Admin = () => {
     const navigate = useNavigate(); // Initialize useNavigate hook
@@ -25,7 +26,8 @@ const Admin = () => {
         { id: 'tab5', name: 'Delivery Approval', url: '/delivery-approval' },
         { id: 'tab6', name: 'Pending Reservations', url: '/pending-reservations' },
         { id: 'tab7', name: 'Inventory Dashboard', url: '/inventory-dashboard' },
-        { id: 'tab8', name: 'Menu Dashboard', url: '/menu-dashboard' }
+        { id: 'tab8', name: 'Menu Dashboard', url: '/menu-dashboard' },
+        { id: 'tab9', name: 'Add Gift Card', url: '/add-gift-card' }
 
         
     ];
@@ -66,6 +68,7 @@ const Admin = () => {
             {activeTab === 'tab6' && <PendingReservations />}
             {activeTab === 'tab7' && <InventoryDashboard />}
             {activeTab === 'tab8' && <MenuDashbaord />}
+            {activeTab === 'tab9' && <AddGiftCard />}
         </div>
     </div>
 </div>

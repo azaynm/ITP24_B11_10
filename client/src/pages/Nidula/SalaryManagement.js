@@ -126,15 +126,7 @@ const SalaryManagement = () => {
     return (
         <div className="container vh-100">
             <h2>Salary Management</h2>
-            <div className="mb-3">
-                <input
-                    type="text"
-                    className='form-control'
-                    placeholder="Search by name"
-                    value={searchQuery}
-                    onChange={e => setSearchQuery(e.target.value)}
-                />
-            </div>
+          
 
             <PDFSalary/>
 
