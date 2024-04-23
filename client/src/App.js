@@ -39,6 +39,7 @@ import UserDashboard from './pages/UserDashboard';
 import EditInventoryItem from './pages/Charuka/EditInventorItem';
 import AddInventoryItem from './pages/Charuka/AddInventoryItem';
 import InventoryDashboard from './pages/Charuka/InventoryDashboard';
+import CheffInventory from './pages/Charuka/CheffInventory';
 import EditMenuItem from './pages/Tharushi/EditMenuItem';
 import GiftCard from './pages/Thilini/GiftCard';
 import Footer from './Footer';
@@ -223,6 +224,14 @@ function App() {
                 // </RoleProtected>
               }
             /> */}
+
+            <Route path='/CheffInventory'
+              element={
+                <RoleProtected role={role} specificRole="cheff">
+                  <CheffInventory />
+                </RoleProtected>
+              }
+            />
 
 
             <Route path='/register' element={<Register />} />
