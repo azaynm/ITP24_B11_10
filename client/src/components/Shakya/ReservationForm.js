@@ -293,11 +293,13 @@ function ReservationForm() {
           </div>
         </div>
       ) : (
+        <div style={{height:'100vh'}}>
         <Stripe
           stripeKey="pk_test_51OuRCSJ53U8MN5Mj2obY1BkeJ1cl0bDIc5PnHEAOWQZUaipW0AUb95gC5z0wV8ohGaV4nS9rk3t0q0nM9A4z9tjP00MZmzpukX"
           token={handleToken}
           style={{ width: '200px' }}
         />
+        </div>
       )}
     </div>
   );

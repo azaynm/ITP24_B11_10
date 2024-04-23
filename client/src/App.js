@@ -274,11 +274,16 @@ function App() {
               }
             />
 
-            <Route path='/inventory-dashboard'
+
+             <Route path='/inventory-dashboard'
               element={
-                  <InventoryDashboard />
+                <RoleProtected role={role} specificRole = "cheff">
+                <InventoryDashboard />
+               </RoleProtected>
               }
             />
+
+   
 
 
           </Routes>

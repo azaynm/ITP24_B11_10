@@ -5,7 +5,7 @@ import { faFacebook, faTwitter, faInstagram } from '@fortawesome/free-brands-svg
 
 const Footer = () => {
   return (
-    <footer className="bg-dark text-light px-5">
+    <footer className="bg-dark text-light px-5 mt-auto"> {/* Add mt-auto class to push footer to bottom */}
       <div className=" py-5">
         <div className="row">
           <div className="col-md-6">
@@ -41,8 +41,8 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="bg-secondary py-3 bg-success" >
-        <div className="text-center" >
+      <div className="bg-secondary py-3 bg-success">
+        <div className="text-center">
           <p className="m-0">&copy; 2024 LiveLifeOrganics. All Rights Reserved.</p>
         </div>
       </div>
