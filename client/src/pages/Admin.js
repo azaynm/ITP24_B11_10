@@ -64,7 +64,14 @@ const Admin = () => {
             <div className="nav flex-column nav-pills vh-100" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 {tabDetails.map(tab => (
                     // Check if the tab is 'Inventory Dashboard' and the user's role is 'cheff'
-                    !(tab.id === 'tab7' && !role.includes('cheff')) && (
+                    !(tab.id === 'tab7' && !role.includes('cheff')) && 
+                    !(tab.id === 'tab9' && !role.includes('systemAdmin')) &&
+
+                    !(tab.id === 'tab1' && !role.includes('systemAdmin')) &&
+                    !(tab.id === 'tab2' && !role.includes('systemAdmin')) &&
+                    !(tab.id === 'tab3' && !role.includes('systemAdmin')) &&
+                    
+                    (
                         <button
                             key={tab.id}
                             className={`nav-link text-light ${activeTab === tab.id ? 'bg-success active' : ''}`}
@@ -74,21 +81,22 @@ const Admin = () => {
                             {tab.name}
                         </button>
                     )
+                    
                 ))}
             </div>
         </div>
         <div className='col-10 h-100'>
             <div className="tab-content" id="v-pills-tabContent">
                 {/* Render components based on activeTab */}
-                {activeTab === 'tab1' && <RegisterEmployee />}
-                {activeTab === 'tab2' && <EditEmployee />}
-                {activeTab === 'tab3' && <SalaryManagement />}
+                {activeTab === 'tab1' && role.includes('systemAdmin') && <RegisterEmployee />}
+                {activeTab === 'tab2' && role.includes('systemAdmin') && <EditEmployee />}
+                {activeTab === 'tab3' && role.includes('systemAdmin') && <SalaryManagement />}
                 {activeTab === 'tab4' && <FeedbackMonitor />}
                 {activeTab === 'tab5' && <DeliveryApproval />}
                 {activeTab === 'tab6' && <PendingReservations />}
                 {activeTab === 'tab7' && role.includes('cheff') && <InventoryDashboard />}
                 {activeTab === 'tab8' && <MenuDashbaord />}
-                {activeTab === 'tab9' && <AddGiftCard />}
+                {activeTab === 'tab9' && role.includes('systemAdmin') && <AddGiftCard />}
             </div>
         </div>
     </div>
