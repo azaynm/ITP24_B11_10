@@ -14,7 +14,7 @@ const Navbar = ({ role, setStatus, status, logOut }) => {
 
 
   return (
-    <div className="header-bottom bg-success d-flex flex-column" style={{ height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
+    <div className="header-bottom bg-success d-flex flex-column" style={{ height: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
 
       <nav className="" style={{ textAlign: "center", marginTop: "0px" }}>
         <img src="/logo.png" style={{ width: '100px' }} />
@@ -111,6 +111,21 @@ const Navbar = ({ role, setStatus, status, logOut }) => {
             User Dashboard
           </Link>
         )}
+
+        {role.includes("Cheff") ? (
+          <Link
+            to="/CheffInventory"
+            style={{
+              color: "white",
+              fontWeight: "bold",
+              textDecoration: "none",
+              padding: "10px",
+            }}
+          >
+            Inventory
+          </Link>
+        ) : null}
+
 
         <Link
           to="/register"

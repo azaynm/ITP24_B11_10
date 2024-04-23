@@ -29,19 +29,19 @@ const Footer = () => {
             <h2>Connect With Us</h2>
             <div className="social-icons">
               <a href="https://www.facebook.com/cafename" target="_blank" rel="noopener noreferrer" className="me-3">
-                <FontAwesomeIcon icon={faFacebook} />
+                <FontAwesomeIcon icon={faFacebook} style={{ color: '#198754' }}/>
               </a>
               <a href="https://www.twitter.com/cafename" target="_blank" rel="noopener noreferrer" className="me-3">
-                <FontAwesomeIcon icon={faTwitter} />
+                <FontAwesomeIcon icon={faTwitter} style={{ color: '#198754' }}/>
               </a>
               <a href="https://www.instagram.com/cafename" target="_blank" rel="noopener noreferrer">
-                <FontAwesomeIcon icon={faInstagram} />
+                <FontAwesomeIcon icon={faInstagram} style={{ color: '#198754' }} />
               </a>
             </div>
           </div>
         </div>
       </div>
-      <div className="bg-secondary py-3 bg-success" >
+      <div className="bg-dark py-3 bg-success" >
         <div className="text-center" >
           <p className="m-0">&copy; 2024 LiveLifeOrganics. All Rights Reserved.</p>
         </div>
