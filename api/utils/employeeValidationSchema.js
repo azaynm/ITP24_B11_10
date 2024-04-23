@@ -16,7 +16,7 @@ const signUpBodyValidation = (body) => {
         empName: Joi.string().required().label("Employee Name"),
         position: Joi.string().required().label("Position"),
         dob: Joi.string().required().label("DOB"),
-        roles: Joi.array().items(Joi.string().valid("systemAdmin", "employee", "eventCoordinator", "deliveryStaff", "cateringManager", "financialManager")).label("Roles"),
+        roles: Joi.array().items(Joi.string().valid("systemAdmin", "employee", "eventCoordinator", "deliveryStaff", "cateringManager", "financialManager", "cheff")).label("Roles"),
     });
 
     //takes the body of object and validates it with schema.validate method

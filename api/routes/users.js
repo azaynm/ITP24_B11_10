@@ -31,8 +31,34 @@ router.get('/isAdmin/:id', async (req, res) => {
     
 });
 
+router.post('/getUser', async (req, res) => {
+    try {
+       
+        const { email } = req.body;
+
+       
+        let user = await User.findOne({ email });
+        if(!user){
+            user = await Employee.findOne({ email });
+        }
+
+        if (!user) {
+            
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // If user found, return the user data (e.g., username)
+        res.json({ username: user.userName });
+    } catch (error) {
+        // If an error occurs, return a 500 status with an error message
+        console.error('Error fetching user data:', error);
+        res.status(500).json({ error: 'Failed to fetch user data' });
+    }
+});
+
 
 router.get("/getId/:selectedUser", async (req, res) => {
+    console.log("get id")
     const id = req.params.selectedUser;
     console.log(id)
     try {

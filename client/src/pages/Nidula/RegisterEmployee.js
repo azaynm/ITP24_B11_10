@@ -142,10 +142,7 @@ const RegisterEmployee = () => {
                                 <select className="form-select" onChange={e => setRoles(Array.from(e.target.selectedOptions, option => option.value))} multiple>
                                     <option value="systemAdmin">System Admin</option>
                                     <option value="employee">Employee</option>
-                                    <option value="eventCoordinator">Event Coordinator</option>
-                                    <option value="deliveryStaff">Delivery Staff</option>
-                                    <option value="cateringManager">Catering Manager</option>
-                                    <option value="financialManager">Financial Manager</option>
+                                    <option value="cheff">Cheff</option>
                                 </select>
                             </div>
                         </div>

@@ -67,7 +67,7 @@ function App() {
   const [total, setTotal] = useState("")
   const [quantity, setQuantity] = useState("")
 
-  const [role, setRole] = useState(["user"]);
+  const [role, setRole] = useState([]);
 
   const [cartTotal, setCartTotal] = useState("");
   const [orderData, setOrderData] = useState([]);
@@ -82,7 +82,6 @@ function App() {
     const user = {
       refreshToken: localStorage.getItem('rfkey'),
     };
-
 
     const { data: response } = await axios.post('http://localhost:8080/api/refreshToken', user)
     console.log(response.error);
@@ -256,11 +255,19 @@ function App() {
 
             <Route path='/admin'
               element={
+                // <RoleProtected role={role} specificRole="systemAdmin">
+                  <Admin />
+                // </RoleProtected>
+              }
+            />
+            
+            {/* <Route path='/admin'
+              element={
                 <RoleProtected role={role} specificRole="systemAdmin">
                   <Admin />
                 </RoleProtected>
               }
-            />
+            /> */}
 
             <Route path='/edit-inventor-item/:id'
               element={

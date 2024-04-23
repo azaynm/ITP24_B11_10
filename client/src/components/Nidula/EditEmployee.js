@@ -27,6 +27,44 @@ const EditEmployee = ({ emp, fetchEmployeeData }) => {
         }
     };
 
+    const handleDelete = async (employeeId) => {
+        // Show confirmation dialog before deleting employee
+        Swal.fire({
+            icon: 'warning',
+            title: 'Delete Employee',
+            text: 'Are you sure you want to delete this employee?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete',
+            cancelButtonText: 'No, cancel',
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    // Send delete request to backend
+                    await axios.delete(`${API_BASE}/api/employee/employees/${employeeId}`);
+                    // Refresh employee data after deletion
+                    fetchEmployeeData();
+                    // Show success message
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Employee deleted successfully!',
+                        timer: 1500
+                    });
+                } catch (error) {
+                    console.error('Error deleting employee:', error);
+                    // Show error message
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to delete employee. Please try again later.',
+                        timer: 1500
+                    });
+                }
+            }
+        });
+    };
+    
+
     const saveChanges = async () => {
         // Show confirmation dialog before saving changes
         Swal.fire({
@@ -132,6 +170,7 @@ const EditEmployee = ({ emp, fetchEmployeeData }) => {
                         <div><strong>Email:</strong> {emp.email}</div>
                         <div><strong>Roles:</strong> {emp.roles.map(role => `'${role}'`).join(', ')}</div>
                         <button onClick={handleEdit} className="btn btn-sm btn-secondary mt-2">Edit</button>
+                        <button onClick={()=>handleDelete(emp._id)} className="btn btn-sm btn-danger mt-2">Delete</button>
                     </div>
                 )}
             </div>
