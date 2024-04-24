@@ -112,7 +112,7 @@ const Navbar = ({ role, setStatus, status, logOut }) => {
           </Link>
         )}
 
-        {role.includes("Cheff") ? (
+        {role.includes("cheff") ? (
           <Link
             to="/CheffInventory"
             style={{

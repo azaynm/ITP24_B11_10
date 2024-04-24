@@ -6,6 +6,8 @@ import bcrypt from "bcrypt";
 import { signUpBodyValidation, loginBodyValidation } from "../utils/validationSchema.js";
 import generateTokens from "../utils/generateTokens.js";
 import UserToken from "../models/UserToken.js";
+import Employee from "../models/Nidula/Employee.js";
+import EmployeeToken from "../models/Nidula/EmployeeToken.js";
 
 
 
@@ -48,7 +50,10 @@ router.post("/signUp", async (req, res) => {
 
 router.post("/getUser", async (req, res) => {
 
-        const user = await User.findOne({ email: req.body.email });
+        let user = await User.findOne({ email: req.body.email });
+        if(!user){
+            user = await Employee.findOne({ email: req.body.email });
+        }
         if (!user) res.status(401).json({ error: true, message: "user is not there" });
         else if(user){
             res.status(200).json({
@@ -61,7 +66,10 @@ router.post("/getUser", async (req, res) => {
 
 router.post("/get-user-details", async (req, res) => {
 
-    const user = await User.findOne({ userName: req.body.username });
+    let user = await User.findOne({ userName: req.body.username });
+    if(!user){
+        user = await Employee.findOne({ userName: req.body.username });
+    }
     if (!user) res.status(401).json({ error: true, message: "user is not there" });
     else if(user){
         res.status(200).json({
@@ -75,7 +83,10 @@ router.post("/get-user-details", async (req, res) => {
 
 router.post("/checkStatus", async (req, res) => {
 
-    const token = await UserToken.findOne({ token: req.body.refreshToken });
+    let token = await UserToken.findOne({ token: req.body.refreshToken });
+    if(!token){
+        token = await EmployeeToken.findOne({ token: req.body.refreshToken });
+    }
     if (!token) res.status(401).json({ error: true, loggedIn: false, message: "user is not logged in" });
     else if(token){
         res.status(200).json({
@@ -101,7 +112,11 @@ router.post("/login", async (req, res) => {
                 .json({ error: true, messaage: error.details[0].message });
 
         //checks user with the given email exist or not
-        const user = await User.findOne({ email: req.body.email });
+        let user = await User.findOne({ email: req.body.email });
+        if(!user){
+            user = await Employee.findOne({ email: req.body.email});
+        }
+        
         if (!user)
             return res
                 .status(401)

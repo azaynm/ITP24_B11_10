@@ -21,6 +21,7 @@ router.get('/view-employees', async (req, res) => {
 
 router.post("/signUpEmployee", async (req, res) => {
     try {
+        
         const { error } = signUpBodyValidation(req.body);
         //if error occurs in the sign up body request
         if (error)
@@ -88,6 +89,24 @@ router.post("/getUser", async (req, res) => {
         });
     }
 })
+
+router.delete("/employees/:id", async (req, res) => {
+    try {
+        const employeeId = req.params.id;
+        
+        // Find the employee by ID and delete it
+        const deletedEmployee = await Employee.findByIdAndDelete(employeeId);
+        
+        if (!deletedEmployee) {
+            return res.status(404).json({ error: "Employee not found" });
+        }
+        
+        res.json({ message: "Employee deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting employee:", error);
+        res.status(500).json({ error: "Failed to delete employee" });
+    }
+});
 
 router.post("/get-user-details", async (req, res) => {
 

@@ -75,7 +75,7 @@ const Login = ({setStatus}) => {
     
 
     const setUsername = async () => {
-        await fetch(API_BASE + "/api/getUser", {
+        await fetch(API_BASE + "/api/users/getUser", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -88,6 +88,7 @@ const Login = ({setStatus}) => {
             return res.json();
         }).then((data) =>{
             localStorage.setItem('username', data.username);
+            console.log(data, "username"); 
             console.log(data.username); 
         });
 

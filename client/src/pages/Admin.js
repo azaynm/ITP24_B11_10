@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Tharushi/Menu.css';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
 import RegisterEmployee from './Nidula/RegisterEmployee';
@@ -13,11 +13,13 @@ import InventoryDashboard from './Charuka/InventoryDashboard';
 import AddMenuItem from './Tharushi/AddMenuItem';
 import MenuDashbaord from './Tharushi/MenuDashbaord';
 import AddGiftCard from './Thilini/AddGiftCard';
+import axios from 'axios';
+import CheffInventory from './Charuka/CheffInventory';
 
 const Admin = () => {
     const navigate = useNavigate(); // Initialize useNavigate hook
     const [activeTab, setActiveTab] = useState('tab1'); // State to manage active tab
-
+    const [role, setRole] = useState([]);
     const tabDetails = [
         { id: 'tab1', name: 'Add Employees', url: '/register-employee' }, // Example tab without category
         { id: 'tab2', name: 'Edit Employees', url: '/edit-employee' }, // Change the URL for other tabs if needed
@@ -26,11 +28,26 @@ const Admin = () => {
         { id: 'tab5', name: 'Delivery Approval', url: '/delivery-approval' },
         { id: 'tab6', name: 'Pending Reservations', url: '/pending-reservations' },
         { id: 'tab7', name: 'Inventory Dashboard', url: '/inventory-dashboard' },
+        
+        { id: 'tab9', name: 'Add Gift Card', url: '/add-gift-card' },
+        { id: 'tab10', name: 'Cheff Inventory', url: '/CheffInventory' },
         { id: 'tab8', name: 'Menu Dashboard', url: '/menu-dashboard' },
-        { id: 'tab9', name: 'Add Gift Card', url: '/add-gift-card' }
 
         
     ];
+
+    const fetchRole = async () => {
+        try {
+          const { data: response } = await axios.get(`http://localhost:8080/api/users/getId/${localStorage.getItem("username")}`);
+    
+          setRole(response.user.roles);
+          console.log("Admin Page Your role is " + response.user.roles);
+          console.log(response);
+    
+        } catch (error) {
+          console.error(error.message);
+        }
+      }
 
     const [categories, setCategories] = useState(["Entrees", "Appetizers", "SideDishes", "Salads", "Soups", "Desserts", "Beverages", "Specials"]);
 
@@ -39,39 +56,53 @@ const Admin = () => {
         
     };
 
+    useEffect(()=>{
+        fetchRole()
+        console.log(role, "role")
+    },[])
+
     return (
         <div className='h-100 d-flex'>
-    <div className='col-2 bg-dark'>
-    <div className="nav flex-column nav-pills vh-100" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-    {tabDetails.map(tab => (
-        <button
-            key={tab.id}
-            className={`nav-link text-light ${activeTab === tab.id ? 'bg-success active' : ''}`}
-            onClick={() => handleTabClick(tab)} // Call handleTabClick function on click
-            style={{ marginTop: '10px' }} // Add margin bottom
-        >
-            {tab.name}
-        </button>
-    ))}
-</div>
-
-    </div>
-
-    <div className='col-10 h-100'>
-        <div className="tab-content" id="v-pills-tabContent">
-            {/* Render components based on activeTab */}
-            {activeTab === 'tab1' && <RegisterEmployee />}
-            {activeTab === 'tab2' && <EditEmployee />}
-            {activeTab === 'tab3' && <SalaryManagement />}
-            {activeTab === 'tab4' && <FeedbackMonitor />}
-            {activeTab === 'tab5' && <DeliveryApproval />}
-            {activeTab === 'tab6' && <PendingReservations />}
-            {activeTab === 'tab7' && <InventoryDashboard />}
-            {activeTab === 'tab8' && <MenuDashbaord />}
-            {activeTab === 'tab9' && <AddGiftCard />}
+        <div className='col-2 bg-dark'>
+            <div className="nav flex-column nav-pills vh-100" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                {tabDetails.map(tab => (
+                    // Check if the tab is 'Inventory Dashboard' and the user's role is 'cheff'
+                    !(tab.id === 'tab9' && !role.includes('systemAdmin')) &&
+                    !(tab.id === 'tab1' && !role.includes('systemAdmin')) &&
+                    !(tab.id === 'tab2' && !role.includes('systemAdmin')) &&
+                    !(tab.id === 'tab3' && !role.includes('systemAdmin')) &&
+                    !(tab.id === 'tab10' && !role.includes('cheff')) &&
+                    
+                    (
+                        <button
+                            key={tab.id}
+                            className={`nav-link text-light ${activeTab === tab.id ? 'bg-success active' : ''}`}
+                            onClick={() => handleTabClick(tab)}
+                            style={{ marginTop: '10px' }}
+                        >
+                            {tab.name}
+                        </button>
+                    )
+                    
+                ))}
+            </div>
+        </div>
+        <div className='col-10 h-100'>
+            <div className="tab-content" id="v-pills-tabContent">
+                {/* Render components based on activeTab */}
+                {activeTab === 'tab1' && role.includes('systemAdmin') && <RegisterEmployee />}
+                {activeTab === 'tab2' && role.includes('systemAdmin') && <EditEmployee />}
+                {activeTab === 'tab3' && role.includes('systemAdmin') && <SalaryManagement />}
+                {activeTab === 'tab4' && <FeedbackMonitor />}
+                {activeTab === 'tab5' && <DeliveryApproval />}
+                {activeTab === 'tab6' && <PendingReservations />}
+                {activeTab === 'tab7' && <InventoryDashboard />}
+                {activeTab === 'tab8' && <MenuDashbaord />}
+                {activeTab === 'tab9' && role.includes('systemAdmin') && <AddGiftCard />}
+                {activeTab === 'tab10' && role.includes('cheff') && <CheffInventory />}
+            </div>
         </div>
     </div>
-</div>
 
     );
 }

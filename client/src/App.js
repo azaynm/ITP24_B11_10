@@ -68,7 +68,7 @@ function App() {
   const [total, setTotal] = useState("")
   const [quantity, setQuantity] = useState("")
 
-  const [role, setRole] = useState(["user"]);
+  const [role, setRole] = useState([]);
 
   const [cartTotal, setCartTotal] = useState("");
   const [orderData, setOrderData] = useState([]);
@@ -83,7 +83,6 @@ function App() {
     const user = {
       refreshToken: localStorage.getItem('rfkey'),
     };
-
 
     const { data: response } = await axios.post('http://localhost:8080/api/refreshToken', user)
     console.log(response.error);
@@ -193,27 +192,27 @@ function App() {
 
             <Route path='/delivery-management'
               element={
-                  <DeliveryManagement />
+                <DeliveryManagement />
               }
             />
 
             <Route path='/delivery-approval'
               element={
-                  <DeliveryApproval />
+                <DeliveryApproval />
               }
             />
 
 
             <Route path='/add-menu'
               element={
-                  <AddFood categories={categories} />
+                <AddFood categories={categories} />
               }
             />
 
 
             <Route path='/edit-menu-item/:itemId'
               element={
-                  <EditMenuItem categories={categories} />
+                <EditMenuItem categories={categories} />
               }
             />
 
@@ -226,13 +225,7 @@ function App() {
               }
             /> */}
 
-            <Route path='/CheffInventory'
-              element={
-                <RoleProtected role={role} specificRole="cheff">
-                  <CheffInventory />
-                </RoleProtected>
-              }
-            />
+            <Route path='/CheffInventory' element={<CheffInventory />} />
 
 
             <Route path='/register' element={<Register />} />
@@ -242,14 +235,14 @@ function App() {
 
             <Route path='/add-gift-card'
               element={
-                  <AddGiftCard />
+                <AddGiftCard />
               }
             />
 
 
             <Route path='/pending-reservations'
               element={
-                  <PendingReservations />
+                <PendingReservations />
               }
             />
 
@@ -265,34 +258,42 @@ function App() {
 
             <Route path='/admin'
               element={
+                // <RoleProtected role={role} specificRole="systemAdmin">
+                <Admin />
+                // </RoleProtected>
+              }
+            />
+
+            {/* <Route path='/admin'
+              element={
                 <RoleProtected role={role} specificRole="systemAdmin">
                   <Admin />
                 </RoleProtected>
               }
-            />
+            /> */}
 
             <Route path='/edit-inventor-item/:id'
               element={
-                  <EditInventoryItem />
+                <EditInventoryItem />
               }
             />
 
             <Route path='/add-inventory-item'
               element={
-                  <AddInventoryItem />
+                <AddInventoryItem />
               }
             />
 
 
-             <Route path='/inventory-dashboard'
+            <Route path='/inventory-dashboard'
               element={
-                <RoleProtected role={role} specificRole = "cheff">
-                <InventoryDashboard />
-               </RoleProtected>
+                <RoleProtected role={role} specificRole="cheff">
+                  <InventoryDashboard />
+                </RoleProtected>
               }
             />
 
-   
+
 
 
           </Routes>
