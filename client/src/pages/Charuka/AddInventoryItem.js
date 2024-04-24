@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from "react";
+import React, { useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -16,6 +15,16 @@ const AddInventoryItem = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!name || !quantity || !price || !supplier || !expirationDate || !category) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Please fill in all fields.'
+            })
+            return;
+        }
+
         const newInventoryItem = {
             name,
             quantity,
@@ -70,6 +79,7 @@ const AddInventoryItem = () => {
                 <div className="mb-3">
                     <label className="form-label">Category</label>
                     <select className="form-select" name="category" value={category} onChange={(e) => setItemCategory(e.target.value)}>
+                        <option value="">Select Category</option>
                         <option value="ingredient">Ingredient</option>
                         <option value="food">Food</option>
                         <option value="beverage">Beverage</option>
