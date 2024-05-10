@@ -203,7 +203,8 @@ function ReservationForm() {
               <div className="col-4 ">
                 <span>Select Date</span>
                 <div className="form-group">
-                  <DatePicker
+                  <input
+                  type="date"
                     selected={selectedDate}
                     onChange={handleDateChange}
                     dateFormat="dd/MM/yyyy"
@@ -215,6 +216,7 @@ function ReservationForm() {
               </div>
               <div className="col-4">
                 <span>Select Time</span>
+                <input type="time"></input>
                 <select
                   className="form-select"
                   value={selectedTime}

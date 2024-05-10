@@ -1,6 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ReservationForm from "./ReservationForm";
+import "./style.css"
+
 
 function TableDetails() {
 
@@ -13,9 +15,10 @@ function TableDetails() {
 
 
   return (
-    <div>
+    <div className="tabs-container mx-5 mb-5 rounded">
       <div className="card-group">
-        <div className="card m-5">
+      <div className="col-12 col-md-6">
+        <div className="card p-3 rounded m-2 custom-card">
           <img
             src="./indoor.jpg"
             className="card-img-top"
@@ -39,7 +42,9 @@ function TableDetails() {
             </button>
           </div>
         </div>
-        <div className="card m-5">
+        </div>
+        <div className="col-12 col-md-6">
+        <div className="card p-3 rounded m-2 custom-card">
           <img
             src="./outdoor.jpg"
             className="card-img-top"
@@ -62,6 +67,7 @@ function TableDetails() {
             </button>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

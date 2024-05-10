@@ -5,7 +5,6 @@ import Swal from 'sweetalert2';
 const API_BASE = "http://localhost:8080";
 
 function MyReservation() {
-
   const [myReservations, setMyReservations] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -20,7 +19,7 @@ function MyReservation() {
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   const cancelReservation = async (id) => {
     Swal.fire({
@@ -44,60 +43,54 @@ function MyReservation() {
         }
       }
     });
-  }
+  };
+
+  const updateReservation = (id) => {
+    // Add logic to handle update reservation action
+  };
 
   useEffect(() => {
     fetchMyReservation();
-  }, []);
+  }, [fetchMyReservation]);
 
   return (
-    <div className="container">
-  <h2 className="mt-4 mb-4">View Reservations</h2>
-  {isLoading ? (
-    <p>Loading...</p>
-  ) : (
-    <div className="table-responsive">
-      <table className="table table-striped table-bordered">
-        <thead className="thead-dark">
-          <tr>
-            <th>Ordered Date</th>
-            <th>Time</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Table Type</th>
-            <th>Number</th>
-            <th>Guest Count</th>
-            <th>Reserved Date</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {myReservations.map(reservation => (
-            <tr key={reservation._id}>
-              <td>{new Date(reservation.selectedDate).toLocaleString()}</td>
-              <td>{reservation.selectedTime}</td>
-              <td>{reservation.name}</td>
-              <td>{reservation.email}</td>
-              <td>{reservation.tableType}</td>
-              <td>{reservation.number}</td>
-              <td>{reservation.guestCount}</td>
-              <td>{new Date(reservation.createdAt).toLocaleString()}</td>
-              <td>{reservation.isApproved ? "Approved" : "Pending"}</td>
-              <td>
-                {reservation.isApproved === false && (
-                  <button className="btn btn-danger btn-sm" onClick={() => cancelReservation(reservation._id)}>Cancel</button>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div>
+      {myReservations.map(reservation => (
+        <div key={reservation._id} className="card p-2 mx-5 mb-2 custom-card">
+          <div className="card-body">
+            <h6>{reservation.isApproved ? "Approved" : "Pending"}</h6>
+            <h5 className="card-title">{reservation.name}</h5>
+            <table className="table table-borderless">
+              <thead>
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Time</th>
+                  <th scope="col">Table Type</th>
+                  <th scope="col">Table Number</th>
+                  <th scope="col">Guest Count</th>
+                  <th scope="col">Phone No</th>
+                  <th scope="col">Email</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{new Date(reservation.selectedDate).toLocaleString()}</td>
+                  <td>{reservation.selectedTime}</td>
+                  <td>{reservation.tableType}</td>
+                  <td>No 4</td>
+                  <td>{reservation.guestCount}</td>
+                  <td>{reservation.number}</td>
+                  <td>{reservation.email}</td>
+                </tr>
+              </tbody>
+            </table>
+            <button type="button" className="btn btn-dark" onClick={() => updateReservation(reservation._id)}>Update</button>
+            <button type="button" className="btn btn-danger m-3" onClick={() => cancelReservation(reservation._id)}>Cancel</button>
+          </div>
+        </div>
+      ))}
     </div>
-  )}
-</div>
-
-  )
+  );
 }
 
 export default MyReservation;
