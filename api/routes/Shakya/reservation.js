@@ -119,7 +119,27 @@ router.post('/reservations', async (req, res) => {
   });
 
 
-  
+// show available table
+router.get('/tables/available', async (req, res) => {
+  const { date, time, tableType } = req.query;
+  console.log('Received date:', date);
+  console.log('Received time:', time);
+  console.log('Received table type:', tableType);
+
+  if (!date || !time || !tableType) {
+    return res.status(400).json({ error: 'Date, time, and table type parameters are required.' });
+  }
+
+  try {
+    const filteredReservations = await Reservation.find({ date, time, tableType });
+    console.log(filteredReservations);
+    console.log("Table Number:", filteredReservations[0]?.tableNumber); // Use optional chaining in case the array is empty
+    res.json(filteredReservations);
+  } catch (error) {
+    console.error('Error fetching reservations:', error);
+    res.status(500).json({ error: 'Failed to fetch reservations.' });
+  }
+});
   
 
 

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import Swal from "sweetalert2";
-import Stripe from 'react-stripe-checkout';
-import { useLocation } from 'react-router-dom';
+import Stripe from "react-stripe-checkout";
+import { useLocation } from "react-router-dom";
 import TableUpdate from "./TableUpdate";
 
 const API_BASE = "http://localhost:8080";
@@ -22,18 +22,49 @@ function ReservationForm() {
   const [reservationFee, setReservationFee] = useState(200);
   const [showPaymentButton, setShowPaymentButton] = useState(false);
   const [selectedTable, setSelectedTable] = useState(null);
+  const [reservations, setReservations] = useState([]);
 
-  const [timeOptions] = useState([
-    "8.00 AM - 9.00 AM",
-    "9.00 AM - 10.00 AM",
-    "10.00 AM - 11.00 AM",
-    "11.00 AM - 12.00 PM",
-    "12.00 PM - 1.00 PM",
-    "1.00 PM - 2.00 PM",
-    "2.00 PM - 3.00 PM",
-    "3.00 PM - 4.00 PM",
-    "4.00 PM - 5.00 PM",
-  ]);
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        if (!selectedDate || !selectedTime || !tableType) {
+          console.error("Selected date, time, and table type are required.");
+          return;
+        }
+        const isoString = selectedDate.toISOString();
+        const response = await fetch(
+          `http://localhost:8080/api/reservation/tables/available?date=${isoString}&time=${selectedTime}&tableType=${tableType}`
+        );
+        if (response.ok) {
+          const reservationdetails = await response.json();
+          console.log(reservationdetails);
+          console.log("tableid : " + reservationdetails[0]?.tableNumber); // Use optional chaining
+          setReservations(reservationdetails);
+         
+        } else {
+          console.error("Failed to fetch reservations");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+  
+    if (selectedDate && selectedTime && tableType) {
+      fetchReservations();
+    }
+  }, [selectedDate, selectedTime, tableType]);
+
+  const timeOptions = [
+    { label: "8.00 AM - 9.00 AM", value: "08:00" },
+    { label: "9.00 AM - 10.00 AM", value: "09:00" },
+    { label: "10.00 AM - 11.00 AM", value: "10:00" },
+    { label: "11.00 AM - 12.00 PM", value: "11:00" },
+    { label: "12.00 PM - 1.00 PM", value: "12:00" },
+    { label: "1.00 PM - 2.00 PM", value: "13:00" },
+    { label: "2.00 PM - 3.00 PM", value: "14:00" },
+    { label: "3.00 PM - 4.00 PM", value: "15:00" },
+    { label: "4.00 PM - 5.00 PM", value: "16:00" },
+  ];
 
   const handleTimeChange = (e) => {
     const selected = e.target.value;
@@ -62,7 +93,7 @@ function ReservationForm() {
   const handleGuestCountChange = (e) => {
     const newGuestCount = e.target.value;
     setGuestCount(newGuestCount);
-  }
+  };
 
   const handleSelectTable = (value) => {
     setSelectedTable(value);
@@ -72,7 +103,10 @@ function ReservationForm() {
     let errors = {};
     let formIsValid = true;
 
-    if (!selectedDate || Object.prototype.toString.call(selectedDate) !== '[object Date]') {
+    if (
+      !selectedDate ||
+      Object.prototype.toString.call(selectedDate) !== "[object Date]"
+    ) {
       errors.selectedDate = "Selected Date is required";
       formIsValid = false;
     }
@@ -103,35 +137,38 @@ function ReservationForm() {
 
     setFormErrors(errors);
     return formIsValid;
-  }
+  };
 
   const handleToken = async (token) => {
     if (!validateForm()) return;
-  
+
     try {
       // First POST request to Stripe API
       const responseStripe = await axios.post(`${API_BASE}/api/stripe/pay`, {
         token: token.id,
         amount: reservationFee, // Convert fee to cents
       });
-  
+
       if (responseStripe.status === 200) {
         const charge = responseStripe.data;
-  
+
         // Second POST request to your local server for adding payment
-        const responsePayment = await axios.post("http://localhost:8080/api/payment/add-payment", {
-          email: charge.billing_details.name,
-          reference: charge.id,
-          amount: charge.amount / 100,
-          customer: charge.customer,
-          userName: localStorage.getItem("username")
-        });
-  
+        const responsePayment = await axios.post(
+          "http://localhost:8080/api/payment/add-payment",
+          {
+            email: charge.billing_details.name,
+            reference: charge.id,
+            amount: charge.amount / 100,
+            customer: charge.customer,
+            userName: localStorage.getItem("username"),
+          }
+        );
+
         if (responsePayment.status === 200) {
           const paymentId = responsePayment.data._id;
-          console.log("payment id", paymentId)
-          const username = localStorage.getItem('username');
-  
+          console.log("payment id", paymentId);
+          const username = localStorage.getItem("username");
+
           // Prepare data for reservation
           const data = {
             selectedDate,
@@ -142,17 +179,23 @@ function ReservationForm() {
             number,
             tableType,
             guestCount,
-            tableNumber:selectedTable,
+            tableNumber: selectedTable,
             fee: reservationFee,
             paymentId, // Pass payment ID
           };
-  
+
           // Third POST request to submit reservation
-          const reservationResponse = await axios.post(`${API_BASE}/api/reservation/reservations`, data);
-  
-          console.log("Reservation submitted successfully:", reservationResponse.data);
-          console.log('Reservation Request Added!');
-  
+          const reservationResponse = await axios.post(
+            `${API_BASE}/api/reservation/reservations`,
+            data
+          );
+
+          console.log(
+            "Reservation submitted successfully:",
+            reservationResponse.data
+          );
+          console.log("Reservation Request Added!");
+
           // Reset form fields
           setSelectedDate(null);
           setSelectedTime(null);
@@ -174,18 +217,17 @@ function ReservationForm() {
       return Promise.reject(error);
     }
   };
-  
 
   const showPayment = () => {
     if (!validateForm()) return;
 
     Swal.fire({
-      title: 'Proceed with payment?',
-      text: 'Are you sure you want to proceed with the payment?',
-      icon: 'question',
+      title: "Proceed with payment?",
+      text: "Are you sure you want to proceed with the payment?",
+      icon: "question",
       showCancelButton: true,
-      confirmButtonText: 'Yes, proceed',
-      cancelButtonText: 'No, cancel',
+      confirmButtonText: "Yes, proceed",
+      cancelButtonText: "No, cancel",
     }).then((result) => {
       if (result.isConfirmed) {
         setShowPaymentButton(true);
@@ -209,11 +251,15 @@ function ReservationForm() {
                 <span>Select Date</span>
                 <div className="form-group">
                   <input
-  type="date"
-  value={selectedDate ? selectedDate.toISOString().split('T')[0] : ''}
-  onChange={(e) => handleDateChange(new Date(e.target.value))}
-  className="form-control"
-/>
+                    type="date"
+                    value={
+                      selectedDate
+                        ? selectedDate.toISOString().split("T")[0]
+                        : ""
+                    }
+                    onChange={(e) => handleDateChange(new Date(e.target.value))}
+                    className="form-control"
+                  />
                   <div className="text-danger">{formErrors.selectedDate}</div>
                 </div>
               </div>
@@ -225,10 +271,10 @@ function ReservationForm() {
                   onChange={handleTimeChange}
                   aria-label="Default select example"
                 >
-                  <option value={null}>Select Time</option> {/* Add default option */}
-                  {timeOptions.map((time, index) => (
-                    <option key={index} value={time}>
-                      {time}
+                  <option value="">Select Time</option>
+                  {timeOptions.map((timeOption) => (
+                    <option key={timeOption.value} value={timeOption.value}>
+                      {timeOption.label}
                     </option>
                   ))}
                 </select>
@@ -287,28 +333,32 @@ function ReservationForm() {
               </div>
             </div>
             <div className="row m-3 p-2">
-            <h5>Select Table</h5>
-            <div className="col-4 p-3">
-              <TableUpdate onSelectTable={handleSelectTable}
-              />
+              <h5>Select Table</h5>
+              <div className="col-4 p-3">
+                <TableUpdate onSelectTable={handleSelectTable} 
+                 reservations={reservations}
+                 selectedDate={selectedDate}
+        selectedTime={selectedTime}/>
+              </div>
             </div>
-          </div>
             <div className="row m-3 p-2 d-flex justify-content-end">
               <div className="col-2">
                 <div className="d-flex">
-                  <button className="btn btn-dark" onClick={showPayment}>Reserve</button>
+                  <button className="btn btn-dark" onClick={showPayment}>
+                    Reserve
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
       ) : (
-        <div style={{height:'100vh'}}>
-        <Stripe
-          stripeKey="pk_test_51OuRCSJ53U8MN5Mj2obY1BkeJ1cl0bDIc5PnHEAOWQZUaipW0AUb95gC5z0wV8ohGaV4nS9rk3t0q0nM9A4z9tjP00MZmzpukX"
-          token={handleToken}
-          style={{ width: '200px' }}
-        />
+        <div style={{ height: "100vh" }}>
+          <Stripe
+            stripeKey="pk_test_51OuRCSJ53U8MN5Mj2obY1BkeJ1cl0bDIc5PnHEAOWQZUaipW0AUb95gC5z0wV8ohGaV4nS9rk3t0q0nM9A4z9tjP00MZmzpukX"
+            token={handleToken}
+            style={{ width: "200px" }}
+          />
         </div>
       )}
     </div>
