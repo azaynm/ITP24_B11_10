@@ -59,7 +59,7 @@ function MyReservation() {
         <div key={reservation._id} className="card p-2 mx-5 mb-2 custom-card">
           <div className="card-body">
             <h6>{reservation.isApproved ? "Approved" : "Pending"}</h6>
-            <h5 className="card-title">{reservation.name}</h5>
+            <h4 className="card-title">{reservation.name}</h4>
             <table className="table table-borderless">
               <thead>
                 <tr>

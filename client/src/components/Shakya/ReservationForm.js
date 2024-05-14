@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Stripe from 'react-stripe-checkout';
 import { useLocation } from 'react-router-dom';
+import TableUpdate from "./TableUpdate";
 
 const API_BASE = "http://localhost:8080";
 
@@ -191,7 +191,7 @@ function ReservationForm() {
   };
 
   return (
-    <div>
+    <div className="res-container m-4 rounded">
       {showPaymentButton === false ? (
         <div className="card m-5">
           <div className="card-body">
@@ -216,7 +216,6 @@ function ReservationForm() {
               </div>
               <div className="col-4">
                 <span>Select Time</span>
-                <input type="time"></input>
                 <select
                   className="form-select"
                   value={selectedTime}
@@ -249,8 +248,7 @@ function ReservationForm() {
               </div>
             </div>
             <div className="row m-3 p-2">
-              <hr></hr>
-              <h5>Personal Details</h5>
+              <h6>Personal Details</h6>
               <div className="col-4 p-3">
                 <span>Name</span>
                 <input
@@ -285,10 +283,16 @@ function ReservationForm() {
                 <div className="text-danger">{formErrors.number}</div>
               </div>
             </div>
+            <div className="row m-3 p-2">
+            <h5>Select Table</h5>
+            <div className="col-4 p-3">
+              <TableUpdate/>
+            </div>
+          </div>
             <div className="row m-3 p-2 d-flex justify-content-end">
               <div className="col-2">
                 <div className="d-flex">
-                  <button className="btn btn-primary" onClick={showPayment}>Reserve</button>
+                  <button className="btn btn-dark" onClick={showPayment}>Reserve</button>
                 </div>
               </div>
             </div>
