@@ -53,6 +53,16 @@ function MyReservation() {
     fetchMyReservation();
   }, [fetchMyReservation]);
 
+  const formatDate = (dateString) => {
+    const [dateStr, timeStr] = dateString.split(',');
+    const dateOnly = dateStr.trim();
+    const date = new Date(dateOnly);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${month}/${day}/${year}`;
+  };
+
   return (
     <div>
       {myReservations.map(reservation => (
@@ -74,10 +84,11 @@ function MyReservation() {
               </thead>
               <tbody>
                 <tr>
-                  <td>{new Date(reservation.selectedDate).toLocaleString()}</td>
+                  
+                <td>{formatDate(reservation.selectedDate)}</td>
                   <td>{reservation.selectedTime}</td>
                   <td>{reservation.tableType}</td>
-                  <td>No 4</td>
+                  <td>No {reservation.tableNumber}</td>
                   <td>{reservation.guestCount}</td>
                   <td>{reservation.number}</td>
                   <td>{reservation.email}</td>

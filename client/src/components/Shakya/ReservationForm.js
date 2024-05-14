@@ -21,6 +21,7 @@ function ReservationForm() {
   const [guestCount, setGuestCount] = useState(0);
   const [reservationFee, setReservationFee] = useState(200);
   const [showPaymentButton, setShowPaymentButton] = useState(false);
+  const [selectedTable, setSelectedTable] = useState(null);
 
   const [timeOptions] = useState([
     "8.00 AM - 9.00 AM",
@@ -63,15 +64,18 @@ function ReservationForm() {
     setGuestCount(newGuestCount);
   }
 
+  const handleSelectTable = (value) => {
+    setSelectedTable(value);
+  };
+
   const validateForm = () => {
     let errors = {};
     let formIsValid = true;
 
-    if (!selectedDate) {
+    if (!selectedDate || Object.prototype.toString.call(selectedDate) !== '[object Date]') {
       errors.selectedDate = "Selected Date is required";
       formIsValid = false;
     }
-
     if (!selectedTime) {
       errors.selectedTime = "Selected Time is required";
       formIsValid = false;
@@ -138,6 +142,7 @@ function ReservationForm() {
             number,
             tableType,
             guestCount,
+            tableNumber:selectedTable,
             fee: reservationFee,
             paymentId, // Pass payment ID
           };
@@ -204,13 +209,11 @@ function ReservationForm() {
                 <span>Select Date</span>
                 <div className="form-group">
                   <input
-                  type="date"
-                    selected={selectedDate}
-                    onChange={handleDateChange}
-                    dateFormat="dd/MM/yyyy"
-                    className="form-control"
-                    isClearable
-                  />
+  type="date"
+  value={selectedDate ? selectedDate.toISOString().split('T')[0] : ''}
+  onChange={(e) => handleDateChange(new Date(e.target.value))}
+  className="form-control"
+/>
                   <div className="text-danger">{formErrors.selectedDate}</div>
                 </div>
               </div>
@@ -286,7 +289,8 @@ function ReservationForm() {
             <div className="row m-3 p-2">
             <h5>Select Table</h5>
             <div className="col-4 p-3">
-              <TableUpdate/>
+              <TableUpdate onSelectTable={handleSelectTable}
+              />
             </div>
           </div>
             <div className="row m-3 p-2 d-flex justify-content-end">

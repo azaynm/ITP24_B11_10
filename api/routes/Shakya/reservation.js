@@ -66,7 +66,7 @@ router.post('/reservations', async (req, res) => {
     try {
       
       // Extract data from request body
-      const { selectedDate, selectedTime, name, username, email, number, tableType, guestCount, fee, paymentId } = req.body;
+      const { selectedDate, selectedTime, name, username, email, number, tableType, guestCount,tableNumber, fee, paymentId } = req.body;
       console.log("Payment id",paymentId);
       // Create a new reservation 
       const reservation = new Reservation({
@@ -78,6 +78,7 @@ router.post('/reservations', async (req, res) => {
         number,
         tableType,
         guestCount,
+        tableNumber,
         fee,
         paymentId
       });

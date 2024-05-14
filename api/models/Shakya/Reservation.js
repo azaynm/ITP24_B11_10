@@ -35,6 +35,10 @@ const reservationSchema = new Schema({
     type: String,
     required: true
   },
+  tableNumber:{
+    type: String,
+    required: true
+  },
   isApproved: {
     type: Boolean,
     default: false
