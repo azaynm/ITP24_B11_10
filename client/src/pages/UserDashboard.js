@@ -8,6 +8,8 @@ import PendingReservations from './Shakya/PendingReservations';
 import MyOrders from './Deranidu/MyOrders';
 import PurchaseGiftCard from './Thilini/GiftCard';
 import Reservation from './Shakya/Reservation';
+import ViewAddresses from './Maleesha/ViewAddresses';
+import AddAddress from './Maleesha/AddAddress';
 
 const UserDashboard = () => {
     const navigate = useNavigate(); // Initialize useNavigate hook
@@ -17,6 +19,7 @@ const UserDashboard = () => {
         { id: 'tab1', name: 'My Orders', url: '/my-orders' }, // Example tab without category
         { id: 'tab2', name: 'Purchase Gift Cards', url: '/purchase-gift-cards' }, 
         { id: 'tab3', name: 'Reservations', url: '/reservations' }, 
+        { id: 'tab4', name: 'My Addresses', url: '/addresses' }, 
         
     ];
 
@@ -25,6 +28,10 @@ const UserDashboard = () => {
         setActiveTab(tab.id);
         
     };
+
+    const redirectAddAddress = () => {
+        setActiveTab("tab5");
+    }
 
     return (
         <div className=''>
@@ -52,6 +59,8 @@ const UserDashboard = () => {
                         {activeTab === 'tab1' && <MyOrders />}
                         {activeTab === 'tab2' && <PurchaseGiftCard />}
                         {activeTab === 'tab3' && <Reservation />}
+                        {activeTab === 'tab4' && <ViewAddresses redirectAddAddress={redirectAddAddress}/>}
+                        {activeTab === 'tab5' && <AddAddress />}
                     </div>
                 </div>
             </div>

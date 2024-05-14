@@ -15,8 +15,11 @@ import MenuDashbaord from './Tharushi/MenuDashbaord';
 import AddGiftCard from './Thilini/AddGiftCard';
 import axios from 'axios';
 import CheffInventory from './Charuka/CheffInventory';
+import EditMenuItem from './Tharushi/EditMenuItem';
 
 const Admin = () => {
+    const [selectedItemId, setSelectedItemId] = useState("")
+    const [categories, setCategories] = useState(["Entrees", "Appetizers", "SideDishes", "Salads", "Soups", "Desserts", "Beverages", "Specials"]);
     const navigate = useNavigate(); // Initialize useNavigate hook
     const [activeTab, setActiveTab] = useState('tab1'); // State to manage active tab
     const [role, setRole] = useState([]);
@@ -49,8 +52,6 @@ const Admin = () => {
         }
       }
 
-    const [categories, setCategories] = useState(["Entrees", "Appetizers", "SideDishes", "Salads", "Soups", "Desserts", "Beverages", "Specials"]);
-
     const handleTabClick = (tab) => {
         setActiveTab(tab.id);
         
@@ -60,6 +61,14 @@ const Admin = () => {
         fetchRole()
         console.log(role, "role")
     },[])
+
+    const redirectAddMenu = () => {
+        setActiveTab('tab11');
+    }
+
+    const redirectEditMenu = () => {
+        setActiveTab('tab12');
+    }
 
     return (
         <div className='h-100 d-flex'>
@@ -97,9 +106,16 @@ const Admin = () => {
                 {activeTab === 'tab5' && <DeliveryApproval />}
                 {activeTab === 'tab6' && <PendingReservations />}
                 {activeTab === 'tab7' && <InventoryDashboard />}
-                {activeTab === 'tab8' && <MenuDashbaord />}
+                {activeTab === 'tab8' && <MenuDashbaord redirectAddMenu={redirectAddMenu} redirectEditMenu={redirectEditMenu} setSelectedItemId={setSelectedItemId}/>}
                 {activeTab === 'tab9' && role.includes('systemAdmin') && <AddGiftCard />}
                 {activeTab === 'tab10' && role.includes('cheff') && <CheffInventory />}
+                {activeTab === 'tab11' && role.includes('systemAdmin') && <AddMenuItem categories={categories} setActiveTab={setActiveTab}/>}
+                {activeTab === 'tab12' && role.includes('systemAdmin') && <EditMenuItem categories={categories} itemId={selectedItemId} setActiveTab={setActiveTab} />}
+
+                
+
+
+            
             </div>
         </div>
     </div>

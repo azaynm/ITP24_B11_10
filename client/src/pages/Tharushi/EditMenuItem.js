@@ -4,8 +4,8 @@ import Swal from 'sweetalert2';
 import axios from 'axios';
 
 const API_BASE = "http://localhost:8080";
-const EditMenuItem = ({ categories }) => {
-    const { itemId } = useParams();
+const EditMenuItem = ({ categories, itemId, setActiveTab }) => {
+    const [inventoryItems, setInventoryItems] = useState([])
     const cuisines = ["Italian Cuisine", "Japanese Cuisine", "Indian Cuisine", "French Cuisine"];
     const [loading, setLoading] = useState(true);
     const [file, setFile] = useState(null); // State to store uploaded file
@@ -33,6 +33,22 @@ const EditMenuItem = ({ categories }) => {
         }
     };
 
+    const fetchInventoryItems = async () => {
+        try {
+            const response = await axios.get(`${API_BASE}/api/inventory/inventory`);
+            setInventoryItems(response.data)
+            console.log("Inventory Items: ", response.data)
+        } catch (error) {
+            console.log("Error fetching data:", error);
+        } finally {
+        }
+    };
+
+
+    useEffect(() => {
+        fetchInventoryItems(); // Initial fetch
+    }, []); // Fetch campaigns initially
+
     const handleChange = ({ target }) => {
         setFood({ ...food, [target.name]: target.value });
     }
@@ -44,9 +60,17 @@ const EditMenuItem = ({ categories }) => {
     };
 
     
-    const handleInventoryItemsChange = (event) => {
-        setFood({ ...food, inventoryItems: event.target.value.split('\n') });
-    }
+    const handleInventoryChange = (event) => {
+        const options = event.target.options;
+        const selectedItems = [];
+        for (let i = 0, l = options.length; i < l; i++) {
+            if (options[i].selected) {
+                selectedItems.push(options[i].value);
+            }
+        }
+        setFood({ ...food, inventoryItems: selectedItems });
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
@@ -69,6 +93,7 @@ const EditMenuItem = ({ categories }) => {
                 Swal.fire('Food Updated!', '', 'success');
                 await axios.put(`${API_BASE}/api/menu/${itemId}`, formData);
                 setFile(null); // Reset file state after successful upload
+                setActiveTab("tab8")
             } else if (result.isDenied) {
                 Swal.fire('Action Cancelled', '', 'info');
             }
@@ -150,17 +175,20 @@ const EditMenuItem = ({ categories }) => {
                                         <div className="text-danger">{formErrors.sellingPrice}</div>
                                     </div>
 
-                                    <div className="form-outline mb-4">
-                                        <textarea
-                                            className="form-control"
-                                            placeholder="Enter Inventory Items (one per line)"
-                                            name="inventoryItems"
-                                            value={food.inventoryItems.join('\n')}
-                                            onChange={handleInventoryItemsChange}
-                                            style={{ backgroundColor: '#FFFFFF' }}
-                                        />
-                                       <div className="text-danger">{formErrors.inventoryItems}</div>
-                                    </div>
+                                     <div className="mb-3 my-5">
+                                    <label htmlFor="inventoryItems">Select Inventory Items:</label>
+                                    <select
+                                        className="form-control"
+                                        id="inventoryItems"
+                                        multiple
+                                        value={food.inventoryItems}
+                                        onChange={handleInventoryChange}
+                                    >
+                                        {inventoryItems.map(item => (
+                                            <option key={item._id} value={item._id}>{item.name}</option>
+                                        ))}
+                                    </select>
+                                </div>
                                     <div className="text-center text-lg-start mt-4 pt-2">
                                         <input className="btn btn-primary" type="submit" value="Update Food" style={{ backgroundColor: '#24FF00', borderColor: '#24FF00' }} />
                                     </div>

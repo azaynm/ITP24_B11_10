@@ -16,6 +16,7 @@ import giftCardRoutes from "./routes/Thilini/giftCard.js";
 import giftCardTemplateRoutes from "./routes/Thilini/giftCardTemplate.js";
 import reservationRoutes from "./routes/Shakya/reservation.js";
 import deliveryStaffRoutes from "./routes/Maleesha/deliveryStaff.js";
+import addressRoutes from "./routes/Maleesha/address.js";
 import feedbackRoutes from "./routes/Geethika/feedback.js";
 import cheffRoutes from "./routes/Maleesha/cheff.js";
 import inventoryRoutes from "./routes/Charuka/inventory.js";
@@ -49,8 +50,9 @@ app.use("/api/menu", menuRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/delivery", deliveryRoutes);
+app.use("/api/address", addressRoutes);
+
 app.use("/api/order", orderRoutes);
-app.use("/api/gift-card", giftCardRoutes);
 app.use("/api/gift-card", giftCardRoutes);
 app.use("/api/gift-card-template", giftCardTemplateRoutes);
 app.use("/api/reservation", reservationRoutes);

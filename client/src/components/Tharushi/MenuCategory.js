@@ -52,8 +52,7 @@ const MenuCategory = ({ category }) => {
         }
     };
     
-    
-    
+
 
     useEffect(() => {
         fetchCategoryMenuItems(); // Initial fetch
@@ -139,8 +138,8 @@ const MenuCategory = ({ category }) => {
 
                 {filteredMenuItems.map((menuItem, index) => (
                     <div key={index} className="col">
-                        <div className="card h-100">
-                            <img src={menuItem.image} className="card-img-top" alt="..." style={{ width: '100px', height: '100px' }} />
+                        <div className="card h-100 food">
+                            <img src={menuItem.image} className="card-img-top food-image" alt="..." />
                             <div className="card-body">
                                 <h5 className="card-title">{menuItem.name}</h5>
                                 <p className="card-text">Rs. {menuItem.sellingPrice}</p>
