@@ -83,11 +83,32 @@ function ReservationForm() {
   const handleEmailChange = (e) => {
     const newEmail = e.target.value;
     setEmail(newEmail);
+
+    let errors = { ...formErrors };
+    if (!newEmail.trim()) {
+      errors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(newEmail)) {
+      errors.email = "Email is invalid";
+    } else {
+      delete errors.email; // Remove the error if email is valid
+    }
+    setFormErrors(errors);
+
   };
 
   const handleNumberChange = (e) => {
     const newNumber = e.target.value;
     setNumber(newNumber);
+
+    let errors = { ...formErrors };
+    if (!newNumber.trim()) {
+      errors.number = "Number is required";
+    } else if (!/^\d{10}$/.test(newNumber)) {
+      errors.number = "Phone number must be 10 digits";
+    } else {
+      delete errors.number; // Remove the error if phone number is valid
+    }
+    setFormErrors(errors);
   };
 
   const handleGuestCountChange = (e) => {
@@ -125,19 +146,9 @@ function ReservationForm() {
       formIsValid = false;
     }
 
-    if (!email.trim()) {
-      errors.email = "Email is required";
-      formIsValid = false;
-    }
+  
 
-    if (!number.trim()) {
-      errors.number = "Number is required";
-      formIsValid = false;
-    }
-
-    setFormErrors(errors);
-    return formIsValid;
-  };
+  }
 
   const handleToken = async (token) => {
     if (!validateForm()) return;
