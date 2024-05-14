@@ -74,14 +74,14 @@ const PendingReservations = () => {
                 <table className="table table-striped table-bordered">
                     <thead className="thead-dark">
                         <tr>
-                            <th>Ordered Date</th>
+                            <th>Reserved Date</th>
                             <th>Time</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Table Type</th>
                             <th>Number</th>
                             <th>Guest Count</th>
-                            <th>Reserved Date</th>
+                            <th>Requested Date</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>

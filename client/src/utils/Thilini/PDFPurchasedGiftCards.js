@@ -27,29 +27,62 @@ const PDFPurchasedGiftCard = () => {
         fetchGiftCards();
     }, []);
 
-    const generatePDFContent = () => (
-        <Document>
+    const groupByAmount = (giftCards) => {
+        const grouped = giftCards.reduce((acc, giftCard) => {
+            if (!acc[giftCard.amount]) {
+                acc[giftCard.amount] = [];
+            }
+            acc[giftCard.amount].push(giftCard);
+            return acc;
+        }, {});
+    
+        return Object.keys(grouped).map(amount => ({
+            amount,
+            giftCards: grouped[amount]
+        }));
+    };
+
+    const generatePDFContent = () => {
+        const groupedGiftCards = groupByAmount(giftCards);
+        console.log("group",groupedGiftCards)
+        groupedGiftCards.map((item, index)=>{console.log(index+1, item)})
+        return (
+            <Document>
             <Page size="A4">
                 <View style={styles.container}>
-                    <Text>Live Life Organics</Text>
-                    <Text>Generated: {new Date().toLocaleString()}</Text>
+                    <Text style={styles.header}>Live Life Organics</Text>
+                    <Text style={styles.date}>Generated: {new Date().toLocaleString()}</Text>
                     <Text style={styles.title}>Purchased Gift Cards Details:</Text>
-                    {giftCards.map((giftCard, index) => (
-                        <View key={index} style={styles.giftCardItem}>
-                            <Text>Customer Username: {giftCard.customerUsername}</Text>
-                            <Text>Code: {giftCard.code}</Text>
-                            <Text>Category: {giftCard.category}</Text>
-                            <Text>Amount: {giftCard.amount}</Text>
-                            <Text>Issue Date: {new Date(giftCard.issueDate).toLocaleString()}</Text>
-                            <Text>Expire Date: {new Date(giftCard.expireDate).toLocaleString()}</Text>
-                            <Text>Payment ID: {giftCard.paymentId}</Text>
-                            <Text>Is Used: {giftCard.isUsed ? 'Yes' : 'No'}</Text>
+                    {groupedGiftCards.map((group, index) => (
+                        <View key={index} style={styles.amountGroup}>
+                            <Text style={styles.amountTitle}>Amount: Rs.{group.amount}</Text>
+                            {group.giftCards.map((giftCard, subIndex) => (
+                                <View key={subIndex} style={styles.giftCardItem}>
+                                    <Text style={styles.label}>Customer Username:</Text>
+                                    <Text style={styles.value}>{giftCard.customerUsername}</Text>
+                                    <Text style={styles.label}>Code:</Text>
+                                    <Text style={styles.value}>{giftCard.code}</Text>
+                                    <Text style={styles.label}>Category:</Text>
+                                    <Text style={styles.value}>{giftCard.category}</Text>
+                                    <Text style={styles.label}>Amount:</Text>
+                                    <Text style={styles.value}>Rs.{giftCard.amount}</Text>
+                                    <Text style={styles.label}>Issue Date:</Text>
+                                    <Text style={styles.value}>{new Date(giftCard.issueDate).toLocaleString()}</Text>
+                                    <Text style={styles.label}>Expire Date:</Text>
+                                    <Text style={styles.value}>{new Date(giftCard.expireDate).toLocaleString()}</Text>
+                                    <Text style={styles.label}>Payment ID:</Text>
+                                    <Text style={styles.value}>{giftCard.paymentId}</Text>
+                                    <Text style={styles.label}>Is Used:</Text>
+                                    <Text style={styles.value}>{giftCard.isUsed ? 'Yes' : 'No'}</Text>
+                                </View>
+                            ))}
                         </View>
                     ))}
                 </View>
             </Page>
         </Document>
-    );
+        );
+    };
 
     return (
         <div>
@@ -73,17 +106,48 @@ const styles = StyleSheet.create({
         margin: '20px',
         padding: '20px',
     },
-    title: {
+    header: {
         fontSize: '24px',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    date: {
+        fontSize: '12px',
+        textAlign: 'center',
+        marginBottom: '10px',
+    },
+    title: {
+        fontSize: '20px',
         fontWeight: 'bold',
         marginBottom: '10px',
         textAlign: 'center',
     },
-    giftCardItem: {
+    amountGroup: {
         marginBottom: '20px',
-        border: '1px solid #ccc',
+    },
+    amountTitle: {
+        fontSize: '18px',
+        fontWeight: 'bold',
+        marginBottom: '10px',
+        borderBottom: '1px solid #000',
+        paddingBottom: '5px',
+    },
+    giftCardItem: {
+        marginBottom: '10px',
         padding: '10px',
         borderRadius: '5px',
+        borderWidth: '1px',
+        borderColor: '#ccc',
+        borderStyle: 'solid',
+        backgroundColor: '#f9f9f9',
+    },
+    label: {
+        fontSize: '12px',
+        fontWeight: 'bold',
+    },
+    value: {
+        fontSize: '12px',
+        marginBottom: '5px',
     },
 });
 

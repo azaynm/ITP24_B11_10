@@ -33,16 +33,20 @@ const PDFInventory = () => {
             });
     }, []);
 
-    function groupByCategory(items) {
-        const groupedItems = {};
-        items.forEach(item => {
-            if (!groupedItems[item.category]) {
-                groupedItems[item.category] = [];
+    const groupByCategory = (items) => {
+        const grouped = items.reduce((acc, item) => {
+            if (!acc[item.category]) {
+                acc[item.category] = [];
             }
-            groupedItems[item.category].push(item);
-        });
-        return groupedItems;
-    }
+            acc[item.category].push(item);
+            return acc;
+        }, {});
+    
+        return Object.keys(grouped).map(category => ({
+            category,
+            items: grouped[category]
+        }));
+    };
 
     function getDate(date) {
         const today = new Date(date);
@@ -65,17 +69,27 @@ const PDFInventory = () => {
     }
 
     const handleGeneratePDF = () => {
+        const groupedCategories = groupByCategory(inventoryItems);
         const pdfContent = (
             <Document>
                 <Page size="A4">
                     <View style={styles.container}>
-                        <Text>Live Life Organics</Text>
-                        <Text>Generated: {new Date().toLocaleString()}</Text>
+                        <Text style={styles.header}>Live Life Organics</Text>
+                        <Text style={styles.date}>Generated: {new Date().toLocaleString()}</Text>
+
+                        <Text style={styles.title}>Inventory Stock</Text>
+                        {groupedCategories.map((group, index) => (
+                            <View key={index} style={styles.groupItem}>
+                                <Text style={styles.label}>{group.category}:</Text>
+                                <Text style={styles.value}>{group.items.length} items</Text>
+                            </View>
+                        ))}
+
                         <Text style={styles.title}>Inventory Items:</Text>
-                        {inventoryItems && Object.entries(groupByCategory(inventoryItems)).map(([category, items], index) => (
+                        {groupedCategories.map((group, index) => (
                             <View key={index}>
-                                <Text style={styles.categoryTitle}>{category}</Text>
-                                {items.map((item, subIndex) => (
+                                <Text style={styles.categoryTitle}>{group.category}</Text>
+                                {group.items.map((item, subIndex) => (
                                     <View key={subIndex} style={styles.foodItem}>
                                         <View style={styles.labelContainer}>
                                             <Text style={styles.label}>Name:</Text>
@@ -128,6 +142,22 @@ const PDFInventory = () => {
 }
 
 const styles = StyleSheet.create({
+    header: {
+        fontSize: '24px',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    date: {
+        fontSize: '12px',
+        textAlign: 'center',
+        marginBottom: '10px',
+    },
+    title: {
+        fontSize: '20px',
+        fontWeight: 'bold',
+        marginBottom: '10px',
+        textAlign: 'center',
+    },
     container: {
         margin: '20px',
         padding: '20px',
@@ -163,6 +193,12 @@ const styles = StyleSheet.create({
     },
     value: {
         flex: 1,
+    },
+    groupItem: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: '5px',
     },
 });
 

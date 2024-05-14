@@ -260,6 +260,11 @@ const DeliveryManagementCategory = ({ category }) => {
         }
     };
    
+    function getDate(time) {
+        const date = new Date(time);
+        const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+        return formattedDate;
+    }
 
     return (
         <div className="scrollable-container py-3">
@@ -356,6 +361,10 @@ const DeliveryManagementCategory = ({ category }) => {
                                                         <tr>
                                                             <td>Delivery Staff</td>
                                                             <td className='text-end'>{item.deliveryStaff}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Time</td>
+                                                            <td className='text-end'>{getDate(item.time)}</td>
                                                         </tr>
                                                     </>
                                                 )}
