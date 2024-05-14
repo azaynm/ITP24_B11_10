@@ -203,7 +203,9 @@ function App() {
 
             <Route path='/view-addresses'
               element={
+
                 <ViewAddresses />
+
               }
             />
 
@@ -237,6 +239,7 @@ function App() {
 
               }
             />
+
 
 
             <Route path='/register' element={<Register />} />
