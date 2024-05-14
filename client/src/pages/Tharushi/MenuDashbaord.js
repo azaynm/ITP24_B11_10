@@ -7,7 +7,7 @@ import PDFMenu from '../../utils/Tharushi/PDFMenu';
 
 const API_BASE = "http://localhost:8080";
 
-const MenuDashbaord = () => {
+const MenuDashbaord = ({redirectAddMenu, redirectEditMenu, setSelectedItemId}) => {
 
     const [menuItems, setMenuItems] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +31,8 @@ const MenuDashbaord = () => {
     }, []); // Fetch campaigns initially
 
     const handleEdit = (itemId) => {
-        window.location.href = `/edit-menu-item/${itemId}`;
+        setSelectedItemId(itemId)
+        redirectEditMenu();
     };
 
     const handleDelete = async (itemId) => {
@@ -56,11 +57,12 @@ const MenuDashbaord = () => {
 
     const filteredMenuItems = menuItems.filter(menuItem =>
         menuItem.name.toLowerCase().includes(searchQuery.toLowerCase())
+        
     );
   return (
     <div className="container mt-5">
             <h1 className="mb-4">Menu Dashboard</h1>
-            <button className="btn btn-warning mb-3" onClick={() => window.location.href = '/add-menu'}>Add Menu Item</button>
+            <button className="btn btn-warning mb-3" onClick={() => redirectAddMenu()}>Add Menu Item</button>
             <td><PDFMenu /></td> 
             <div className="mb-3">
                 <input

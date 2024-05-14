@@ -43,6 +43,9 @@ import CheffInventory from './pages/Charuka/CheffInventory';
 import EditMenuItem from './pages/Tharushi/EditMenuItem';
 import GiftCard from './pages/Thilini/GiftCard';
 import Footer from './Footer';
+import ViewAddresses from './pages/Maleesha/ViewAddresses';
+import MyProfile from './pages/Maleesha/MyProfile';
+import AddAddress from './pages/Maleesha/AddAddress';
 
 
 
@@ -53,7 +56,6 @@ const API_BASE = "http://localhost:8080";
 
 function App() {
   const [categories, setCategories] = useState(["Entrees", "Appetizers", "SideDishes", "Salads", "Soups", "Desserts", "Beverages", "Specials"]);
-
   const baseURL = `http://localhost:8080/api/cart/user/${localStorage.getItem('username')}`;
   const key = localStorage.getItem("rfkey");
   const [homeFoodData, setHomeFoodData] = useState([])
@@ -162,7 +164,7 @@ function App() {
   return (
     <Context.Provider>
       <BrowserRouter>
-        <div>
+        <div className="d-flex flex-column justify-content-between" >
           <Navbar role={role} setStatus={setStatus} status={status} logOut={logOut} />
           <Routes>
 
@@ -190,6 +192,23 @@ function App() {
 
             />
 
+            <Route path='/add-address'
+              element={
+
+                <AddAddress />
+
+              }
+
+            />
+
+            <Route path='/view-addresses'
+              element={
+
+                <ViewAddresses />
+
+              }
+            />
+
             <Route path='/delivery-management'
               element={
                 <DeliveryManagement />
@@ -203,18 +222,6 @@ function App() {
             />
 
 
-            <Route path='/add-menu'
-              element={
-                <AddFood categories={categories} />
-              }
-            />
-
-
-            <Route path='/edit-menu-item/:itemId'
-              element={
-                <EditMenuItem categories={categories} />
-              }
-            />
 
 
             {/* <Route path='/employee'
@@ -225,7 +232,14 @@ function App() {
               }
             /> */}
 
-            <Route path='/CheffInventory' element={<CheffInventory />} />
+            <Route path='/CheffInventory'
+              element={
+
+                <CheffInventory />
+
+              }
+            />
+
 
 
             <Route path='/register' element={<Register />} />
@@ -254,7 +268,7 @@ function App() {
 
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/gift-card" element={<GiftCard />} />
-
+            <Route path="/my-profile" element={<MyProfile />} />
 
             <Route path='/admin'
               element={

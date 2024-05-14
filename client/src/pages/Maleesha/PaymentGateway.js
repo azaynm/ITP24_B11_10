@@ -26,6 +26,7 @@ const PaymentGateway = () => {
     const [totalAfterCoupon, setTotalAfterCoupon] = useState(total);
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
+    const [addresses, setAddressess] = useState([]);
 
     const handleAddressChange = (event) => {
         setAddress(event.target.value);
@@ -84,66 +85,76 @@ const PaymentGateway = () => {
         }
     };
 
+    const deleteGiftCardByCode = async (code) => {
+        try {
+            const response = await axios.delete(`http://localhost:8080/api/gift-card/gift-cards/${code}`);
+            console.log('Gift card deleted successfully:', response.data);
+            return response.data; // Optionally return data
+        } catch (error) {
+            console.error('Error deleting gift card:', error);
+            throw error; // Rethrow error to handle it in the calling code
+        }
+    }
+
     const handleToken = async (totalAmount, token) => {
         try {
-        
+            const response = await axios.post("http://localhost:8080/api/stripe/pay", {
+                token: token.id,
+                amount: totalAmount,
+            });
 
-                const response = await axios.post("http://localhost:8080/api/stripe/pay", {
-                    token: token.id,
-                    amount: totalAmount,
-                });
+            console.log(response);
 
-                console.log(response);
+            if (response.status === 200) {
+                const charge = response.data;
 
-                if (response.status === 200) {
-                    const charge = response.data;
+                // Chain the second POST request inside the first one
+                return axios.post("http://localhost:8080/api/payment/add-payment", {
+                    email: charge.billing_details.name,
+                    reference: charge.id,
+                    amount: charge.amount / 100,
+                    customer: charge.customer,
+                    userName: localStorage.getItem("username")
+                })
+                    .then((res2) => {
+                        // Access the data from the response of the second POST request
+                        const paymentId = res2.data._id;
+                        console.log("Payment ID:", paymentId);
+                        deleteGiftCardByCode(couponCode)
 
-                    // Chain the second POST request inside the first one
-                    return axios.post("http://localhost:8080/api/payment/add-payment", {
-                        email: charge.billing_details.name,
-                        reference: charge.id,
-                        amount: charge.amount / 100,
-                        customer: charge.customer,
-                        userName: localStorage.getItem("username")
-                    })
-                        .then((res2) => {
-                            // Access the data from the response of the second POST request
-                            const paymentId = res2.data._id;
-                            console.log("Payment ID:", paymentId);
+                        // Assuming cartFoodData is defined somewhere in your code
+                        // Ensure it's accessible and has the correct data
+                        console.log("Cart Food Data:", cartFoodData);
 
-                            // Assuming cartFoodData is defined somewhere in your code
-                            // Ensure it's accessible and has the correct data
-                            console.log("Cart Food Data:", cartFoodData);
+                        // Assuming localStorage is accessible and has the correct data
+                        const customer = localStorage.getItem("username");
 
-                            // Assuming localStorage is accessible and has the correct data
-                            const customer = localStorage.getItem("username");
-
-                            // Make the second POST request to add order
-                            const orderPromise = axios.post("http://localhost:8080/api/order/add-order", {
-                                foods: cartFoodData,
-                                amount: totalAmount, // Use totalAmount for order amount?
-                                customer: customer,
-                                paymentId: paymentId,
-                                address: address,
-                                city: city,
-                                phone: phone
-                            });
-
-                            // Chain the deletion of cart items after the order is successfully added
-                            return orderPromise.then(() => {
-                                navigate(`/cart/${localStorage.getItem("username")}`);
-                                deleteAllCartItems();
-                            });
-                        })
-                        .catch(error => {
-                            console.error("Error in second POST request:", error);
-                            return Promise.reject(error);
+                        // Make the second POST request to add order
+                        const orderPromise = axios.post("http://localhost:8080/api/order/add-order", {
+                            foods: cartFoodData,
+                            amount: totalAmount, // Use totalAmount for order amount?
+                            customer: customer,
+                            paymentId: paymentId,
+                            address: address,
+                            city: city,
+                            phone: phone
                         });
-                } else {
-                    console.log("Stripe payment request failed");
-                    return Promise.reject("Stripe payment request failed");
-                }
-            
+
+                        // Chain the deletion of cart items after the order is successfully added
+                        return orderPromise.then(() => {
+                            navigate(`/cart/${localStorage.getItem("username")}`);
+                            deleteAllCartItems();
+                        });
+                    })
+                    .catch(error => {
+                        console.error("Error in second POST request:", error);
+                        return Promise.reject(error);
+                    });
+            } else {
+                console.log("Stripe payment request failed");
+                return Promise.reject("Stripe payment request failed");
+            }
+
         } catch (error) {
             console.error("Error in first POST request:", error);
             return Promise.reject(error);
@@ -172,6 +183,51 @@ const PaymentGateway = () => {
                 console.error("Error deleting carts:", error);
             });
     }
+
+
+    useEffect(() => {
+        axios.get(`http://localhost:8080/api/address/${localStorage.getItem('username')}`)
+            .then(response => {// Corrected to access _id property
+                setAddressess(response.data);
+
+            })
+            .catch(error => {
+                console.error("Error fetching order IDs:", error);
+            });
+    }, []);
+
+
+
+    // http://localhost:8070/api/delivery_details/${orderId}
+    const handleAddressesChange = (e) => {
+        console.log("All addresses", addresses)
+        console.log(e.target.value, "changed");
+        const newAddress = addresses.filter((addr) => addr._id === e.target.value);
+        console.log("selected address", newAddress);
+        setCustomer(newAddress[0].name)
+        setAddress(newAddress[0].address)
+        setCity(newAddress[0].city)
+
+        // const selectedId = e.target.value;
+        // setSelectedOrderId(selectedId);
+
+        // axios.get(`http://localhost:8070/api/delivery_details/${selectedId}`)
+        //     .then(response => {
+        //         const selectedOrder = response.data; // Corrected to access _id property
+        //         console.log(selectedOrder);
+
+        //         setName(selectedOrder.name);
+        //         setAddress(selectedOrder.address);
+        //         setCity(selectedOrder.city);
+        //         setContactNumber(selectedOrder.contactNo);
+        //         setAmount(selectedOrder.totalPrice.toString());
+        //         const feeValue = calculateFee(selectedOrder.city.toLowerCase());
+        //         setFee(feeValue.toString());
+        //     })
+        //     .catch(error => {
+        //         console.error("Error fetching order details:", error);
+        //     });
+    };
     return (
         <div className="container">
             <h1>Payment</h1>
@@ -209,6 +265,15 @@ const PaymentGateway = () => {
             </div>
 
             <div >
+                <div className="mb-3 my-5">
+                    <label htmlFor="orderId">Select Address:</label>
+                    <select className="form-control" id="orderId" onChange={handleAddressesChange}>
+                        <option value="">Select an Address</option>
+                        {addresses && addresses.map(address => (
+                            <option key={address._id} value={address._id}>{address.address}</option>
+                        ))}
+                    </select>
+                </div>
                 <div className="mb-3">
                     <label htmlFor="name" className="form-label">Your Name</label>
                     <input type="text" className="form-control" id="name" name="name" value={customer.name} onChange={handleChange} />
@@ -228,14 +293,14 @@ const PaymentGateway = () => {
             </div>
 
             {totalAfterCoupon <= 100 ? (
-                    <div className='text-danger'>Total should be at least Rs. 100</div>
-                ) : (
-                    <Stripe
-                stripeKey="pk_test_51OuRCSJ53U8MN5Mj2obY1BkeJ1cl0bDIc5PnHEAOWQZUaipW0AUb95gC5z0wV8ohGaV4nS9rk3t0q0nM9A4z9tjP00MZmzpukX"
-                token={tokenHandler}
-            />
-                )}
-            
+                <div className='text-danger'>Total should be at least Rs. 100</div>
+            ) : (
+                <Stripe
+                    stripeKey="pk_test_51OuRCSJ53U8MN5Mj2obY1BkeJ1cl0bDIc5PnHEAOWQZUaipW0AUb95gC5z0wV8ohGaV4nS9rk3t0q0nM9A4z9tjP00MZmzpukX"
+                    token={tokenHandler}
+                />
+            )}
+
         </div>
     )
 }

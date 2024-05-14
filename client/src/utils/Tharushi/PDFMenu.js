@@ -20,6 +20,7 @@ const PDFMenu = () => {
         }
     };
 
+
     useEffect(() => {
         setIsLoading(true);
         fetchMenu()
@@ -39,67 +40,87 @@ const PDFMenu = () => {
     }
 
     function groupByCategory(items) {
-        const groupedItems = {};
-        items.forEach(item => {
-            if (!groupedItems[item.category]) {
-                groupedItems[item.category] = [];
+        const groupedItems = items.reduce((acc, item) => {
+            if (!acc[item.category]) {
+                acc[item.category] = {
+                    count: 0,
+                    items: []
+                };
             }
-            groupedItems[item.category].push(item);
-        });
+            acc[item.category].count += 1;
+            acc[item.category].items.push(item);
+            return acc;
+        }, {});
         return groupedItems;
     }
-    
+
+
+
+
 
     const handleGeneratePDF = () => {
+        const groupedItems = groupByCategory(menuItems);
         const pdfContent = (
             <Document>
-            <Page size="A4">
-                <View style={styles.container}>
-                <Text>Live Life Organics</Text>
-                <Text>Generated: {new Date().toLocaleString()}</Text>
-                    <Text style={styles.title}>Menu Items:</Text>
-                    {menuItems && Object.entries(groupByCategory(menuItems)).map(([category, items], index) => (
-                        <View key={index}>
-                            <Text style={styles.categoryTitle}>{category}</Text>
-                            {items.map((item, subIndex) => (
-                                <View key={subIndex} style={{ display: 'flex', flexDirection: 'row' }}>
-                                    <View>
-                                        {item.image && <Image style={styles.foodImage} src={item.image} />}
-                                    </View>
-                                    <View style={styles.foodItem}>
-                                        <View style={styles.labelContainer}>
-                                            <Text style={styles.label}>Name:</Text>
-                                            <Text style={styles.value}>{item.name}</Text>
-                                        </View>
-                                        <View style={styles.labelContainer}>
-                                            <Text style={styles.label}>Description:</Text>
-                                            <Text style={styles.value}>{item.description}</Text>
-                                        </View>
-                                        <View style={styles.labelContainer}>
-                                            <Text style={styles.label}>Price:</Text>
-                                            <Text style={styles.value}>Rs.{item.sellingPrice}</Text>
-                                        </View>
-                                        <View style={styles.labelContainer}>
-                                            <Text style={styles.label}>Quantity:</Text>
-                                            <Text style={styles.value}>{item.quantity}</Text>
-                                        </View>
-                                        <View style={styles.labelContainer}>
-                                            <Text style={styles.label}>Supplier:</Text>
-                                            <Text style={styles.value}>{item.supplier}</Text>
-                                        </View>
-                                        <View style={styles.labelContainer}>
-                                            <Text style={styles.label}>Cost:</Text>
-                                            <Text style={styles.value}>Rs.{item.cost}</Text>
-                                        </View>
+                <Page size="A4">
+                    <View style={styles.container}>
+                        <Text>Live Life Organics</Text>
+                        <Text>Generated: {new Date().toLocaleString()}</Text>
+
+                        <Text style={styles.title}>Summary:</Text>
+                        <View style={styles.summaryContainer}>
+                            {Object.entries(groupedItems).map(([category, data], index) => (
+                                <View key={index} style={styles.categorySummary}>
+                                    <View style={styles.summary}>
+                                        <Text style={styles.categoryTitle}>{category}</Text>
+                                        <Text style={styles.categoryTitle}>{data.count} items</Text>
                                     </View>
                                 </View>
                             ))}
                         </View>
-                    ))}
-                </View>
-            </Page>
-        </Document>
-        
+
+                        <Text style={styles.title}>Menu Items:</Text>
+                        {Object.entries(groupedItems).map(([category, data], index) => (
+                            <View key={index}>
+                                <Text style={styles.categoryTitle}>{category} ({data.count} items)</Text>
+
+                                {data.items.map((item, subIndex) => (
+                                    <View key={subIndex} style={styles.labelContainer}>
+                                        {item.image && <Image style={styles.foodImage} src={item.image} />}
+                                        <View style={styles.foodItem}>
+                                            <View style={styles.labelContainer}>
+                                                <Text style={styles.label}>Name:</Text>
+                                                <Text style={styles.value}>{item.name}</Text>
+                                            </View>
+                                            <View style={styles.labelContainer}>
+                                                <Text style={styles.label}>Description:</Text>
+                                                <Text style={styles.value}>{item.description}</Text>
+                                            </View>
+                                            <View style={styles.labelContainer}>
+                                                <Text style={styles.label}>Price:</Text>
+                                                <Text style={styles.value}>Rs.{item.sellingPrice}</Text>
+                                            </View>
+                                            <View style={styles.labelContainer}>
+                                                <Text style={styles.label}>Quantity:</Text>
+                                                <Text style={styles.value}>{item.quantity}</Text>
+                                            </View>
+                                            <View style={styles.labelContainer}>
+                                                <Text style={styles.label}>Supplier:</Text>
+                                                <Text style={styles.value}>{item.supplier}</Text>
+                                            </View>
+                                            <View style={styles.labelContainer}>
+                                                <Text style={styles.label}>Cost:</Text>
+                                                <Text style={styles.value}>Rs.{item.cost}</Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                ))}
+                            </View>
+                        ))}
+                    </View>
+                </Page>
+            </Document>
+
 
         );
         return pdfContent;
@@ -122,6 +143,16 @@ const styles = StyleSheet.create({
         padding: '20px',
         flexWrap: 'wrap',
     },
+    summary: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    summaryContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between'
+    },
     labelContainer: {
         display: 'flex',
         flexDirection: 'row',
@@ -130,6 +161,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: '24px',
         fontWeight: 'bold',
+        marginTop: '10px',
         marginBottom: '10px',
         textAlign: 'center',
     },
@@ -137,7 +169,7 @@ const styles = StyleSheet.create({
         marginBottom: '20px',
         border: '1px solid #ccc',
         padding: '10px',
-        width:'300px',
+        width: '300px',
         borderRadius: '5px',
     },
     foodName: {

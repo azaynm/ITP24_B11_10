@@ -82,6 +82,37 @@ const DeliveryManagementCategory = ({ category }) => {
         setIsOpenCheffAssign(true);
     }
 
+    const deleteDelivery = (id) => {
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You are about to delete this order.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, keep it'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If user confirms, proceed with deletion
+                axios.delete(`${API_BASE}/api/delivery/orders/${id}`)
+                    .then(function (response) {
+                        console.log('Order deleted successfully:', response.data);
+                        fetchReadyItems();
+                        // Show success message
+                        Swal.fire('Deleted!', 'The order has been deleted.', 'success');
+                    })
+                    .catch(function (error) {
+                        console.error('Error deleting order:', error);
+                        // Show error message
+                        Swal.fire('Error!', 'Failed to delete the order.', 'error');
+                    });
+            } else {
+                // If user cancels, do nothing
+                Swal.fire('Cancelled', 'The order deletion was cancelled.', 'info');
+            }
+        });
+    }
+
     const makeReady = async () => {
         setIsOpenCheffAssign(false);
         // Show confirmation dialog before making the order ready
@@ -331,7 +362,10 @@ const DeliveryManagementCategory = ({ category }) => {
                                                 <tr>
                                                     <td colSpan="2">
                                                         {category === "pending" && (
+                                                            <>
                                                             <button className='btn btn-warning' onClick={() => openCheffAssign(item._id)} style={{ width: '100%' }}>Assign Cheff</button>
+                                                            <button className='btn btn-danger my-2' onClick={() => deleteDelivery(item._id)} style={{ width: '100%' }}>Delete</button>
+                                                            </>
                                                         )}
                                                         {category === "ready-to-deliver" && (
                                                             <button className='btn btn-warning' onClick={() => openDeliveryAssign(item._id)} style={{ width: '100%' }}>Assign Delivery Staff</button>

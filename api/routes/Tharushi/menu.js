@@ -64,7 +64,7 @@ router.post("/upload", upload.single("image"), async(req, res) => {
         description,
         category,
         sellingPrice,
-        inventoryItems: inventoryItemsArray,
+        inventoryItems: Array.isArray(inventoryItems) ? inventoryItems : inventoryItems.split('\n'),
         image
        
     }

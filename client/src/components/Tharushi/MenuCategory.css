@@ -1,3 +1,19 @@
 .swal2-container {
     z-index: 20000;
 }
+
+.food{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none
+}
+.food-image{
+    width: 200px; 
+    height: 200px;
+}
+
+.food-image:hover{
+    width: 205px; 
+    height: 205px;
+}

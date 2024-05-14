@@ -132,4 +132,27 @@ router.post('/completed-deliveries', async (req, res) => {
     }
 });
 
+
+router.delete('/orders/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        // Find the order by ID and delete it
+        const deletedOrder = await Order.findByIdAndDelete(id);
+
+        // If no order found with the provided ID
+        if (!deletedOrder) {
+            return res.status(404).json({ message: 'Order not found' });
+        }
+
+        // Respond with a success message
+        res.json({ message: 'Order deleted successfully' });
+    } catch (error) {
+        // Handle errors
+        console.error('Error deleting order:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+
 export default router;

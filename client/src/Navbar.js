@@ -127,6 +127,8 @@ const Navbar = ({ role, setStatus, status, logOut }) => {
         ) : null}
 
 
+
+
         <Link
           to="/register"
           style={{
@@ -152,6 +154,19 @@ const Navbar = ({ role, setStatus, status, logOut }) => {
           </Link>
         ) : (
           <span>
+
+            <Link
+              to="/my-profile"
+              style={{
+                color: "white",
+                fontWeight: "bold",
+                textDecoration: "none",
+                padding: "10px",
+              }}
+            >
+              My Profile
+            </Link>
+
             <Link
               to="/login"
               style={{
@@ -165,19 +180,22 @@ const Navbar = ({ role, setStatus, status, logOut }) => {
               Logout
             </Link>
 
+
+
+
             {/* <Link to={`/cart/${localStorage.getItem('username')}`}>
                         <Badge badgeContent={cartCount} color="primary">
                             <MailIcon color="action" />
                         </Badge>
                     </Link> */}
           </span>
-          
+
         )}
 
       </nav>
-     
+
     </div>
-    
+
   );
 };
 

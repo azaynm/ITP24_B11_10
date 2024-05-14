@@ -99,4 +99,22 @@ router.get('/check-gift-card', async (req, res) => {
     }
 });
 
+router.delete('/gift-cards/:code', async (req, res) => {
+    const { code } = req.params;
+
+    try {
+        const deletedGiftCard = await GiftCard.findOneAndDelete({ code });
+
+        if (!deletedGiftCard) {
+            return res.status(404).json({ message: 'Gift card not found' });
+        }
+
+        res.json({ message: 'Gift card deleted successfully' });
+    } catch (error) {
+        // Handle errors
+        console.error('Error deleting gift card:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
 export default router;

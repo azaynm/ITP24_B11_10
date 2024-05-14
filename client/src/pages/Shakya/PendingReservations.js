@@ -49,7 +49,8 @@ const PendingReservations = () => {
      const filteredReservations = reservations.filter(reservation =>
         reservation.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         reservation.tableType.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        reservation.email.toLowerCase().includes(searchQuery.toLowerCase())
+        reservation.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        reservation.isApproved.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
 
