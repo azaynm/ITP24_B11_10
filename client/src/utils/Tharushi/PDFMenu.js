@@ -64,8 +64,8 @@ const PDFMenu = () => {
             <Document>
                 <Page size="A4">
                     <View style={styles.container}>
-                        <Text>Live Life Organics</Text>
-                        <Text>Generated: {new Date().toLocaleString()}</Text>
+                        <Text style={styles.header}>Live Life Organics</Text>
+                        <Text style={styles.date}>Generated: {new Date().toLocaleString()}</Text>
 
                         <Text style={styles.title}>Summary:</Text>
                         <View style={styles.summaryContainer}>
@@ -138,6 +138,16 @@ const PDFMenu = () => {
 }
 
 const styles = StyleSheet.create({
+    header: {
+        fontSize: '24px',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    date: {
+        fontSize: '12px',
+        textAlign: 'center',
+        marginBottom: '10px',
+    },
     container: {
         margin: '20px',
         padding: '20px',
