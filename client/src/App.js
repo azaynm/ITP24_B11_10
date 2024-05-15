@@ -46,6 +46,7 @@ import Footer from './Footer';
 import ViewAddresses from './pages/Maleesha/ViewAddresses';
 import MyProfile from './pages/Maleesha/MyProfile';
 import AddAddress from './pages/Maleesha/AddAddress';
+import AboutUs from './pages/AboutUs';
 
 
 
@@ -196,6 +197,15 @@ function App() {
               element={
 
                 <AddAddress />
+
+              }
+
+            />
+
+<Route path='/about-us'
+              element={
+
+                <AboutUs />
 
               }
 

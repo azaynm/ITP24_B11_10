@@ -27,7 +27,7 @@ const PaymentGateway = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
     const [addresses, setAddressess] = useState([]);
-
+    const [showPaymentButton, setShowPaymentButton] = useState(false);
     const handleAddressChange = (event) => {
         setAddress(event.target.value);
     };
@@ -142,8 +142,8 @@ const PaymentGateway = () => {
 
                         // Chain the deletion of cart items after the order is successfully added
                         return orderPromise.then(() => {
-                            navigate(`/cart/${localStorage.getItem("username")}`);
                             deleteAllCartItems();
+                            navigate(`/cart/${localStorage.getItem("username")}`);
                         });
                     })
                     .catch(error => {
@@ -170,8 +170,6 @@ const PaymentGateway = () => {
 
     const tokenHandler = (token) => {
         handleToken(totalAfterCoupon, token);
-
-
     }
 
     const deleteAllCartItems = () => {
@@ -196,7 +194,44 @@ const PaymentGateway = () => {
             });
     }, []);
 
+    const confirmPayment = () => {
+        if (!address) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Address is Required.',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+        }
+        else if(!customer){
+            Swal.fire({
+                title: 'Error!',
+                text: 'Name is Required.',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+        } 
+        else if(!city){
+            Swal.fire({
+                title: 'Error!',
+                text: 'City is Required.',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+        } 
+        else if(!phone){
+            Swal.fire({
+                title: 'Error!',
+                text: 'Mobile number is Required.',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+        } 
+        else {
+            setShowPaymentButton(true)
+        }
 
+    }
 
     // http://localhost:8070/api/delivery_details/${orderId}
     const handleAddressesChange = (e) => {
@@ -292,13 +327,17 @@ const PaymentGateway = () => {
                 </div>
             </div>
 
-            {totalAfterCoupon <= 100 ? (
+            {totalAfterCoupon < 100 ? (
                 <div className='text-danger'>Total should be at least Rs. 100</div>
             ) : (
-                <Stripe
-                    stripeKey="pk_test_51OuRCSJ53U8MN5Mj2obY1BkeJ1cl0bDIc5PnHEAOWQZUaipW0AUb95gC5z0wV8ohGaV4nS9rk3t0q0nM9A4z9tjP00MZmzpukX"
-                    token={tokenHandler}
-                />
+                showPaymentButton ? (
+                    <Stripe
+                        stripeKey="pk_test_51OuRCSJ53U8MN5Mj2obY1BkeJ1cl0bDIc5PnHEAOWQZUaipW0AUb95gC5z0wV8ohGaV4nS9rk3t0q0nM9A4z9tjP00MZmzpukX"
+                        token={tokenHandler}
+                    />
+                ) : (
+                    <button className='btn btn-primary' onClick={() => confirmPayment()}>Confirm</button>
+                )
             )}
 
         </div>

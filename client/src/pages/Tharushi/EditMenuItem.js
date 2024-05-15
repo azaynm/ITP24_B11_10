@@ -73,6 +73,16 @@ const EditMenuItem = ({ categories, itemId, setActiveTab }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+    // Validation
+    if (!food.name || !food.description || !food.category || !food.sellingPrice || !food.image || food.inventoryItems.length === 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Missing Fields',
+            text: 'Please fill out all fields.',
+        });
+        return;
+    }    
         const formData = new FormData();
         formData.append('name', food.name);
         formData.append('description', food.description);

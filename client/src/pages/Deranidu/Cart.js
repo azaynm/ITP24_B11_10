@@ -67,10 +67,16 @@ const Cart = () => {
 
   const updateCartItem = async (id, newQuantity) => {
     try {
-      await axios.put(`http://localhost:8080/api/cart/update-item/${id}`, { quantity: newQuantity });
-      setCartFoodData(cartFoodData.map(item => (item._id === id ? { ...item, quantity: newQuantity } : item)));
-      Swal.fire('Item Updated!', '', 'success');
-      setEditItemId(null);
+      if(newQuantity>0){
+        await axios.put(`http://localhost:8080/api/cart/update-item/${id}`, { quantity: newQuantity });
+        setCartFoodData(cartFoodData.map(item => (item._id === id ? { ...item, quantity: newQuantity } : item)));
+        Swal.fire('Item Updated!', '', 'success');
+        setEditItemId(null);
+      }
+      else{
+        Swal.fire('Error!', 'Quantity Should be greater than 0.', 'error');
+      }
+      
     } catch (error) {
       console.error('Error updating item:', error);
       Swal.fire('Error!', 'Failed to update item in cart.', 'error');

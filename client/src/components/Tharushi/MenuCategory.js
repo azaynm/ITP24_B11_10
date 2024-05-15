@@ -16,29 +16,37 @@ const MenuCategory = ({ category }) => {
         try {
             setIsLoading(true);
             const response = await axios.get(`${API_BASE}/api/menu/view-item/${category}`);
-            const items = response.data.map(item => ({ ...item, quantity: 1 })); // Add quantity property to each item
+            const items = response.data.map(item => ({ ...item, quantity: 1 }));
     
             const checkInventoryPromises = items.map(async (menuItem) => {
-                const inventoryPromises = menuItem.inventoryItems.map(async (inventoryId) => {
-                    // Trim whitespace characters from the inventoryId
-                    const trimmedInventoryId = inventoryId.trim();
-                    const inventoryResponse = await axios.post(`${API_BASE}/api/menu/check-inventory-quantity`, { inventory: [trimmedInventoryId] });
-                    return inventoryResponse.data.allQuantitiesGreaterThanZero;
-                });
-                const inventoryResults = await Promise.all(inventoryPromises);
-                const isQuantityGreaterThanZero = inventoryResults.every((result) => result);
-                return { ...menuItem, outOfStock: !isQuantityGreaterThanZero, selectedQuantity: 1, isSelected: false  }; // Add outOfStock property to each item
+                const validInventoryIds = menuItem.inventoryItems.filter(id => id.trim() !== '');
+    
+                if (validInventoryIds.length > 0) {
+                    const inventoryPromises = validInventoryIds.map(async (inventoryId) => {
+                        const trimmedInventoryId = inventoryId.trim();
+                        const inventoryResponse = await axios.post(`${API_BASE}/api/menu/check-inventory-quantity`, { inventory: [trimmedInventoryId] });
+                        return inventoryResponse.data.allQuantitiesGreaterThanZero;
+                    });
+    
+                    const inventoryResults = await Promise.all(inventoryPromises);
+                    const isQuantityGreaterThanZero = inventoryResults.every(result => result);
+    
+                    return { ...menuItem, outOfStock: !isQuantityGreaterThanZero, selectedQuantity: 1 };
+                } else {
+                    // If no valid inventory IDs, mark the item as out of stock
+                    return { ...menuItem, outOfStock: true, selectedQuantity: 1 };
+                }
             });
     
             const checkedItems = await Promise.all(checkInventoryPromises);
             setCategoryMenuItems(checkedItems);
-            
         } catch (error) {
             console.log("Error fetching data:", error);
         } finally {
             setIsLoading(false);
         }
     };
+    
 
 
 

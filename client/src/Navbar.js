@@ -41,6 +41,18 @@ const Navbar = ({ role, setStatus, status, logOut }) => {
           Home
         </Link>
 
+        <Link
+          to="/about-us"
+          style={{
+            color: "white",
+            fontWeight: "bold",
+            textDecoration: "none",
+            padding: "10px",
+          }}
+        >
+          About Us
+        </Link>
+
         {role.includes("deliveryStaff") ? (
           <Link
             to="/delivery-management"
