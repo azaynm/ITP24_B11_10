@@ -63,7 +63,15 @@ const AddMenuItem = ({ categories, setActiveTab }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Show confirmation dialog using SweetAlert
+        // Validation
+        if (!newFood.name || !newFood.description || !newFood.category || !newFood.sellingPrice || !newFood.image || newFood.inventoryItems.length === 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Missing Fields',
+                text: 'Please fill out all fields.',
+            });
+            return;
+        }
         Swal.fire({
             title: 'Are you sure?',
             text: 'You are about to add the menu item.',
